@@ -1,4 +1,4 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -30,4 +30,27 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+} */
+
+/* footer.footer {
+  margin-top: auto;
+  margin-bottom: 0;
+  background: #f1f1f1;
+  padding: 1rem;
+  text-align: center;
+} */
+
+footer.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #f1f1f1;
+  padding: 1rem;
+  text-align: center;
 }
+
+/* .app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+} */
