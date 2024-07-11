@@ -1,5 +1,6 @@
 "use client";
-import { isRequired, minChars } from "@/utils";
+import { signIn, signUp } from "@/apis/auth";
+import { SignInSchema, SignInUser, SignUpSchema, SignUpUser } from "@/types/auth.schema";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -11,7 +12,9 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 interface AuthFormProps {
     isSignIn: boolean;
@@ -38,45 +41,32 @@ const Constants = {
     },
 };
 
-const baseSchema = Yup.object().shape({
-    email: Yup.string()
-        .nullable()
-        .email("Please enter a valid email.")
-        .required(isRequired("Email")),
-    password: Yup.string().min(8, minChars("Password", 8)),
-});
-
-const signUpSchema = baseSchema.concat(
-    Yup.object().shape({
-        firstName: Yup.string()
-            .nullable()
-            .required(isRequired("First Name"))
-            .min(3, minChars("First Name", 3)),
-        lastName: Yup.string()
-            .nullable()
-            .required(isRequired("Last Name"))
-            .min(3, minChars("Last Name", 3)),
-    }),
-);
-
 const AuthForm = (props: AuthFormProps) => {
     const { isSignIn } = props;
+    const [loading, setLoading] = useState(false);
     const constants = isSignIn ? Constants.SignIn : Constants.SignUp;
+    const schema = isSignIn ? SignInSchema : SignUpSchema;
 
     const formik = useFormik({
         initialValues: {
-            firstName: "",
-            lastName: "",
+            displayName: "",
             email: "",
             password: "",
         },
-        validationSchema: isSignIn ? baseSchema : signUpSchema,
+        validationSchema: toFormikValidationSchema(schema),
         validateOnChange: true,
-        onSubmit: (values) => {
-            console.log(values);
-            alert(JSON.stringify(values, null, 2));
-        },
+        onSubmit: (values) => handleSubmit(values),
     });
+
+    const handleSubmit = async (user: SignInUser | SignUpUser) => {
+        if (isSignIn) {
+            const response = await signIn(user);
+            console.log(response);
+        } else {
+            const response = await signUp(user as SignUpUser);
+            console.log(response);
+        }
+    };
 
     return (
         <Container component="main" maxWidth="xs">
@@ -99,52 +89,29 @@ const AuthForm = (props: AuthFormProps) => {
                     <form onSubmit={formik.handleSubmit}>
                         <Grid container spacing={2}>
                             {!isSignIn && (
-                                <>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            autoComplete="given-name"
-                                            name="firstName"
-                                            value={formik.values.firstName}
-                                            required
-                                            fullWidth
-                                            id="firstName"
-                                            label="First Name"
-                                            autoFocus
-                                            spellCheck={false}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            error={Boolean(
-                                                formik?.touched?.firstName &&
-                                                    formik?.errors?.firstName,
-                                            )}
-                                            helperText={
-                                                formik?.touched?.firstName &&
-                                                formik?.errors?.firstName
-                                            }
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} sm={6}>
-                                        <TextField
-                                            fullWidth
-                                            id="lastName"
-                                            label="Last Name"
-                                            name="lastName"
-                                            value={formik.values.lastName}
-                                            autoComplete="family-name"
-                                            spellCheck={false}
-                                            onBlur={formik.handleBlur}
-                                            onChange={formik.handleChange}
-                                            error={Boolean(
-                                                formik?.touched?.lastName &&
-                                                    formik?.errors?.lastName,
-                                            )}
-                                            helperText={
-                                                formik?.touched?.lastName &&
-                                                formik?.errors?.lastName
-                                            }
-                                        />
-                                    </Grid>
-                                </>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        autoComplete="given-name"
+                                        name="displayName"
+                                        value={formik.values.displayName}
+                                        required
+                                        fullWidth
+                                        id="displayName"
+                                        label="Display Name"
+                                        autoFocus
+                                        spellCheck={false}
+                                        onBlur={formik.handleBlur}
+                                        onChange={formik.handleChange}
+                                        error={Boolean(
+                                            formik?.touched?.displayName &&
+                                                formik?.errors?.displayName,
+                                        )}
+                                        helperText={
+                                            formik?.touched?.displayName &&
+                                            formik?.errors?.displayName
+                                        }
+                                    />
+                                </Grid>
                             )}
 
                             <Grid item xs={12}>
@@ -211,6 +178,7 @@ const AuthForm = (props: AuthFormProps) => {
                             </Typography>
                         </Grid>
                     </Grid>
+                    {formik.isSubmitting && <CircularProgress color={"primary"} />}
                 </Box>
             </Box>
         </Container>

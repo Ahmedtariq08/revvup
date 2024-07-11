@@ -1,20 +1,26 @@
 // src/index.js
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
 import userRouter from "../routes/userRoutes";
-
-dotenv.config();
+import cors from "cors";
+import { CLIENT_URL, PORT } from "../config/config";
 
 const app: Express = express();
 app.use(express.json());
-const port = process.env.PORT || 3000;
+
+// Configure CORS
+app.use(
+    cors({
+        origin: CLIENT_URL!,
+        methods: ["GET", "POST", "PUT", "DELETE"],
+        credentials: true,
+    }),
+);
 
 app.use("/users", userRouter);
-
 app.get("/", (req: Request, res: Response) => {
     res.send("Ebuddy test backend running...");
 });
 
-app.listen(port, () => {
-    console.log(`[server]: Server is running at http://localhost:${port}`);
+app.listen(PORT, () => {
+    console.log(`[server]: Server is running at http://localhost:${PORT}`);
 });

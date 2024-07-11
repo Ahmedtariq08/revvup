@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { isRequired, minChars } from "../utils";
 
+/* Schemas must match with backend API */
 const SignUpSchema = z.object({
     email: z
         .string({ message: isRequired("Email address") })
@@ -37,13 +38,5 @@ type SignInUser = z.infer<typeof SignInSchema>;
 type BaseUser = z.infer<typeof BaseUserSchema>;
 type UpdateUser = z.infer<typeof UpdateUserSchema>;
 
-export {
-    SignUpSchema,
-    SignInSchema,
-    BaseUserSchema,
-    UpdateUserSchema,
-    SignInUser,
-    SignUpUser,
-    BaseUser,
-    UpdateUser,
-};
+export { SignUpSchema, SignInSchema, BaseUserSchema, UpdateUserSchema };
+export type { SignInUser, SignUpUser, BaseUser, UpdateUser };

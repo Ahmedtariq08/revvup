@@ -13,14 +13,19 @@ export const handleError = (
     error: any,
     defaultMessage: string,
 ): { status: number; message: string } => {
+    console.log(error);
+    const { BAD_REQUEST, INTERNAL_SERVER_ERROR } = STATUS_CODES;
     // Codes can be added to handle differently
     if (error.code && error.code.startsWith("auth/")) {
-        return { status: STATUS_CODES.BAD_REQUEST, message: error.message };
+        if (error.code.startsWith("auth/invalid-credential")) {
+            return { status: BAD_REQUEST, message: "Invalid Credentials." };
+        }
+        return { status: BAD_REQUEST, message: error.message ?? error };
     } else if (error instanceof ZodError) {
         const firstError = error.errors[0];
-        return { status: STATUS_CODES.BAD_REQUEST, message: firstError.message };
+        return { status: BAD_REQUEST, message: firstError.message };
     }
-    return { status: STATUS_CODES.INTERNAL_SERVER_ERROR, message: defaultMessage };
+    return { status: INTERNAL_SERVER_ERROR, message: defaultMessage };
 };
 
 /**
