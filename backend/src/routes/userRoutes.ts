@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import { admin } from "../config/firebaseConfig";
-import { handleError, parseSchema } from "../entities/ApiError";
+import { handleError } from "../entities/ApiError";
 import {
     CreateUser,
     CreateUserSchema,
