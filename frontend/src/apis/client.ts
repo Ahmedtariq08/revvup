@@ -19,12 +19,10 @@ interface ErrorApiResponse<T> {
 }
 
 export type ApiResponse<T> = SuccessApiResponse<T> | ErrorApiResponse<T>;
-
-const { NEXT_PUBLIC_BASE_URL } = process.env;
-
+//?? "http://localhost:5000/"
 // Axios Client
 const apiClient = axios.create({
-    baseURL: "http://localhost:5000/",
+    baseURL: process.env.NEXT_PUBLIC_BASE_URL,
     withCredentials: true,
     headers: {
         "Access-Control-Allow-Origin": "*",

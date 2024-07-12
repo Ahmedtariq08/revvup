@@ -1,9 +1,9 @@
 "use client";
-import { createNewUser } from "@/apis/users";
+import { createNewUser, updateUserApi } from "@/apis/users";
 import { Severity, showNotification } from "@/store/slices/notificationSlice";
-import { addUser } from "@/store/slices/usersSlice";
-import { useAppDispatch } from "@/store/store";
-import { CreateUser, CreateUserSchema } from "@/types/user.shema";
+import { addUser, resetForm, updateUser } from "@/store/slices/usersSlice";
+import { useAppDispatch, useAppSelector } from "@/store/store";
+import { CreateUser, CreateUserSchema, User } from "@/types/user.shema";
 import {
     Box,
     Button,
@@ -18,19 +18,30 @@ import { useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { FormatLineSpacing } from "@mui/icons-material";
+import { useEffect } from "react";
+import { formatObj } from "@/utils";
 
-const CreateUserForm = () => {
+const emptyForm = {
+    email: "",
+    displayName: "",
+    city: "",
+    country: "",
+};
+
+const UserForm = () => {
     const dispatch = useAppDispatch();
+
+    const userState = useAppSelector((state) => state.users);
+    const { users, selectedUser, formMode } = userState;
+
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+    const isCreateMode = formMode === "create";
+    const title = isCreateMode ? "Create" : "Update";
 
     const formik = useFormik({
-        initialValues: {
-            email: "",
-            displayName: "",
-            city: "",
-            country: "",
-        },
+        initialValues: emptyForm,
         validationSchema: toFormikValidationSchema(CreateUserSchema),
         validateOnChange: true,
         onSubmit: (values) => handleSubmit(values),
@@ -41,14 +52,47 @@ const CreateUserForm = () => {
     };
 
     const handleSubmit = async (user: CreateUser) => {
-        const response = await createNewUser(user);
-        if (!response.isSuccess) {
-            sendNotificiation(response.error?.message);
-        } else {
-            const newUser = response.data;
-            dispatch(addUser(newUser));
-            sendNotificiation("User created successfully!", "success");
+        if (isCreateMode) {
+            const response = await createNewUser(user);
+            if (!response.isSuccess) {
+                sendNotificiation(response.error?.message);
+            } else {
+                const newUser = response.data;
+                dispatch(addUser(newUser));
+                sendNotificiation("User created successfully!", "success");
+                handleReset();
+            }
+        } else if (selectedUser?.id) {
+            const response = await updateUserApi({ id: selectedUser?.id, ...user });
+            if (!response.isSuccess) {
+                sendNotificiation(response.error?.message);
+            } else {
+                const newUser = response.data;
+                dispatch(updateUser(newUser));
+                sendNotificiation("User updated successfully!", "success");
+                handleReset();
+            }
         }
+    };
+
+    const updateFormikValues = async (values: User) => {
+        await formik.setValues({
+            email: values.email,
+            displayName: values.displayName,
+            city: values.city ?? "",
+            country: values.country ?? "",
+        });
+    };
+
+    useEffect(() => {
+        if (!isCreateMode && selectedUser) {
+            updateFormikValues(selectedUser);
+        }
+    }, [formMode, selectedUser]);
+
+    const handleReset = () => {
+        formik.resetForm();
+        dispatch(resetForm());
     };
 
     return (
@@ -63,47 +107,52 @@ const CreateUserForm = () => {
                             padding: "1rem 0rem",
                         }}
                     >
-                        <Typography component="h2" variant="h5" width={"70%"}>
-                            Create User
+                        <Typography component="h2" variant="h5">
+                            {`${title} User`}
                         </Typography>
-                        {isMobile ? (
-                            <IconButton
-                                type="submit"
-                                size="large"
-                                title="Create User"
-                                disabled={!formik.isValid}
-                            >
-                                <AddIcon />
-                            </IconButton>
-                        ) : (
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                disabled={!formik.isValid}
-                                startIcon={<AddIcon />}
-                            >
-                                Create
-                            </Button>
-                        )}
-                        {isMobile ? (
-                            <IconButton
-                                size="large"
-                                title="Reset"
-                                onClick={() => formik.resetForm()}
-                            >
-                                <RestartAltIcon />
-                            </IconButton>
-                        ) : (
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => formik.resetForm()}
-                                startIcon={<RestartAltIcon />}
-                            >
-                                Reset
-                            </Button>
-                        )}
+                        <Box>
+                            {isMobile ? (
+                                <IconButton
+                                    type="submit"
+                                    size="large"
+                                    title={`${title} User`}
+                                    disabled={!formik.isValid}
+                                >
+                                    <AddIcon />
+                                </IconButton>
+                            ) : (
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={!formik.isValid}
+                                    startIcon={<AddIcon />}
+                                    sx={{ mr: 2 }}
+                                >
+                                    {title}
+                                </Button>
+                            )}
+                            {isMobile ? (
+                                <IconButton
+                                    size="large"
+                                    title="Reset"
+                                    onClick={handleReset}
+                                    // disabled={!isCreateMode}
+                                >
+                                    <RestartAltIcon />
+                                </IconButton>
+                            ) : (
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleReset}
+                                    // disabled={!isCreateMode}
+                                    startIcon={<RestartAltIcon />}
+                                >
+                                    Reset
+                                </Button>
+                            )}
+                        </Box>
                     </Box>
                     <Grid container spacing={2}>
                         <Grid item xs={3}>
@@ -186,4 +235,4 @@ const CreateUserForm = () => {
     );
 };
 
-export default CreateUserForm;
+export default UserForm;

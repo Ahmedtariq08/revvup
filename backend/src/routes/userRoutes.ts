@@ -2,39 +2,17 @@ import { Request, Response, Router } from "express";
 import { db } from "../config/firebaseConfig";
 import { handleError } from "../entities/ApiError";
 import { verifyToken } from "../middleware/authMiddleware";
-import { CreateUser, CreateUserSchema, User } from "../repository/userCollection";
+import {
+    CreateUser,
+    CreateUserSchema,
+    UpdateUser,
+    UpdateUserSchema,
+    User,
+} from "../repository/userCollection";
 
 const userRouter = Router();
 
-// userRouter.post("/sign-up", async (req: Request, res: Response) => {
-//     try {
-//         const user: SignUpUser = SignUpSchema.parse(req.body);
-//         const userCredentials = await admin.auth().createUser(user);
-//         const userResponse: BaseUser = BaseUserSchema.parse(userCredentials);
-//         return res.status(200).json(userResponse);
-//     } catch (error) {
-//         const { status, message } = handleError(error, "Unable to sign up");
-//         return res.status(status).send(message);
-//     }
-// });
-
-// userRouter.post("/sign-in", async (req: Request, res: Response) => {
-//     try {
-//         const user: SignInUser = SignInSchema.parse(req.body);
-//         const response = await signInWithEmailAndPassword(
-//             auth,
-//             user.email,
-//             user.password,
-//         );
-//         //TODO -
-//         return res.status(200).json(response);
-//     } catch (error) {
-//         const { status, message } = handleError(error, "Unable to log in the user.");
-//         console.log(message);
-//         return res.status(status).send(message);
-//     }
-// });
-
+/* Get all users */
 userRouter.get("/fetch-user-data", verifyToken, async (req: Request, res: Response) => {
     try {
         const usersSnapshot = await db.collection("Users").get();
@@ -49,6 +27,7 @@ userRouter.get("/fetch-user-data", verifyToken, async (req: Request, res: Respon
     }
 });
 
+/* Create a new user */
 userRouter.post("/create-user", verifyToken, async (req: Request, res: Response) => {
     try {
         const user: CreateUser = CreateUserSchema.parse(req.body);
@@ -64,17 +43,44 @@ userRouter.post("/create-user", verifyToken, async (req: Request, res: Response)
     }
 });
 
-// userRouter.post("/update-user-data", async (req: Request, res: Response) => {
-//     try {
-//         const user: UpdateUser = UpdateUserSchema.parse(req.body);
-//         const { uid, ...rest } = user;
-//         const updatedUser = await admin.auth().updateUser(user.uid, rest);
-//         const userResponse: BaseUser = BaseUserSchema.parse(updatedUser);
-//         return res.status(200).json(userResponse);
-//     } catch (error) {
-//         const { status, message } = handleError(error, "Unable to update user");
-//         return res.status(status).send(message);
-//     }
-// });
+/* Update existing user */
+userRouter.post("/update-user-data", verifyToken, async (req: Request, res: Response) => {
+    try {
+        const user: UpdateUser = UpdateUserSchema.parse(req.body);
+        const userDoc = db.collection("Users").doc(user.id);
+        const docSnapshot = await userDoc.get();
+        if (!docSnapshot.exists) {
+            return res.status(404).send("User not found");
+        }
+        await userDoc.update(user);
+        res.status(200).json(user);
+    } catch (error) {
+        const { message, status } = handleError(error, "Unable to update user.");
+        res.status(status).send(message);
+    }
+});
+
+/* Delete an existing user */
+userRouter.delete(
+    "/delete-user/:id",
+    verifyToken,
+    async (req: Request, res: Response) => {
+        try {
+            const { id } = req.params;
+            const userDoc = db.collection("Users").doc(id);
+            const docSnapshot = await userDoc.get();
+
+            if (!docSnapshot.exists) {
+                return res.status(404).send("User not found");
+            }
+
+            await userDoc.delete();
+            res.status(200).send("User deleted successfully");
+        } catch (error) {
+            const { message, status } = handleError(error, "Unable to delete user.");
+            res.status(status).send(message);
+        }
+    },
+);
 
 export default userRouter;

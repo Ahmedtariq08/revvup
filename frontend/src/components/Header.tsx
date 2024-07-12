@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 const Header = () => {
     const router = useRouter();
     const { user, loading } = useAuth();
+    console.log(user);
     const dispatch = useAppDispatch();
 
     const theme = useTheme();
@@ -47,7 +48,7 @@ const Header = () => {
             <AppBar position="static" color="secondary">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Welcome, {user?.displayName}!
+                        Welcome, {user?.email}!
                     </Typography>
                     {isMobile ? (
                         <>

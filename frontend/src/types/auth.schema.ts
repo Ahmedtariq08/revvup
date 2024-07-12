@@ -19,24 +19,8 @@ const SignInSchema = SignUpSchema.pick({
     password: true,
 });
 
-// const BaseUserSchema = SignUpSchema.pick({ email: true, displayName: true }).extend({
-//     uid: z.string({ message: isRequired("Uid") }),
-// });
-
-// const UpdateUserSchema = SignUpSchema.pick({
-//     email: true,
-//     displayName: true,
-//     password: true,
-// })
-//     .partial()
-//     .extend({
-//         uid: z.string({ message: isRequired("Uid") }),
-//     });
-
 type SignUpUser = z.infer<typeof SignUpSchema>;
 type SignInUser = z.infer<typeof SignInSchema>;
-// type BaseUser = z.infer<typeof BaseUserSchema>;
-// type UpdateUser = z.infer<typeof UpdateUserSchema>;
 
 export { SignUpSchema, SignInSchema };
 export type { SignInUser, SignUpUser };

@@ -76,7 +76,6 @@ const AuthForm = (props: AuthFormProps) => {
             }
         } else {
             const response = await signUpFb(user as SignUpUser);
-            console.log(response);
             if (!response.isSuccess) {
                 sendAuthNotificiation(response.error?.message);
             } else {
