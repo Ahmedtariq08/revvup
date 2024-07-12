@@ -48,7 +48,7 @@ const getAuthConfig = (
     return config ? { ...config, ...headerToken } : headerToken;
 };
 
-const handleResponse = <T>(response: AxiosResponse<T>): ApiResponse<T> => {
+export const handleResponse = <T>(response: AxiosResponse<T>): ApiResponse<T> => {
     return {
         data: response.data,
         error: null,
@@ -56,7 +56,7 @@ const handleResponse = <T>(response: AxiosResponse<T>): ApiResponse<T> => {
     };
 };
 
-const handleError = <T>(error: AxiosError): ApiResponse<T> => {
+export const handleError = <T>(error: AxiosError): ApiResponse<T> => {
     const errorMessage =
         typeof error.response?.data == "string" ? error.response?.data : error.message;
     return {

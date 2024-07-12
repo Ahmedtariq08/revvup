@@ -1,10 +1,13 @@
 "use client";
-import { signIn, signUp } from "@/apis/auth";
+import { signInFb, signUpFb } from "@/apis/auth";
+import { Severity, showNotification } from "@/store/slices/notificationSlice";
+import { useAppDispatch } from "@/store/store";
 import { SignInSchema, SignInUser, SignUpSchema, SignUpUser } from "@/types/auth.schema";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
@@ -12,9 +15,9 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
-import { useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import { redirect, useRouter } from "next/navigation";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import LoaderCircle from "./LoaderCircle";
 
 interface AuthFormProps {
     isSignIn: boolean;
@@ -36,14 +39,15 @@ const Constants = {
         redirect: {
             label: "Already have an account?",
             text: "Sign in",
-            href: "/sign-in",
+            href: "/",
         },
     },
 };
 
 const AuthForm = (props: AuthFormProps) => {
     const { isSignIn } = props;
-    const [loading, setLoading] = useState(false);
+    const dispatch = useAppDispatch();
+    const router = useRouter();
     const constants = isSignIn ? Constants.SignIn : Constants.SignUp;
     const schema = isSignIn ? SignInSchema : SignUpSchema;
 
@@ -58,13 +62,28 @@ const AuthForm = (props: AuthFormProps) => {
         onSubmit: (values) => handleSubmit(values),
     });
 
+    const sendAuthNotificiation = (message: string, severity?: Severity) => {
+        dispatch(showNotification({ message, severity }));
+    };
+
     const handleSubmit = async (user: SignInUser | SignUpUser) => {
         if (isSignIn) {
-            const response = await signIn(user);
-            console.log(response);
+            const response = await signInFb(user);
+            if (!response.isSuccess) {
+                sendAuthNotificiation(response.error?.message);
+            } else {
+                sendAuthNotificiation("Login Success!", "success");
+                router.push("/main");
+            }
         } else {
-            const response = await signUp(user as SignUpUser);
+            const response = await signUpFb(user as SignUpUser);
             console.log(response);
+            if (!response.isSuccess) {
+                sendAuthNotificiation(response.error?.message);
+            } else {
+                sendAuthNotificiation("Sign up Success!", "success");
+                router.push("/main");
+            }
         }
     };
 
@@ -178,9 +197,9 @@ const AuthForm = (props: AuthFormProps) => {
                             </Typography>
                         </Grid>
                     </Grid>
-                    {formik.isSubmitting && <CircularProgress color={"primary"} />}
                 </Box>
             </Box>
+            <LoaderCircle showLoader={formik.isSubmitting} />
         </Container>
     );
 };

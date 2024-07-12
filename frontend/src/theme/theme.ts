@@ -87,11 +87,58 @@ const normalColors = {
     },
 };
 
+const differentColors = {
+    primary: {
+        main: "#1565c0", // Darker Blue
+        light: "#5e92f3",
+        dark: "#003c8f",
+        contrastText: "#ffffff",
+    },
+    secondary: {
+        main: "#009688", // Teal
+        light: "#52c7b8",
+        dark: "#00675b",
+        contrastText: "#ffffff",
+    },
+    success: {
+        main: "#388e3c", // Darker Green
+        light: "#6abf69",
+        dark: "#00600f",
+        contrastText: "#ffffff",
+    },
+    error: {
+        main: "#f44336", // Red
+        light: "#ff7961",
+        dark: "#ba000d",
+        contrastText: "#ffffff",
+    },
+    warning: {
+        main: "#ff9800", // Orange
+        light: "#ffc947",
+        dark: "#c66900",
+        contrastText: "#ffffff",
+    },
+    info: {
+        main: "#2196f3", // Light Blue
+        light: "#6ec6ff",
+        dark: "#0069c0",
+        contrastText: "#ffffff",
+    },
+    background: {
+        default: "#f4f6f8", // Light Grey background
+        paper: "#ffffff", // White background for paper components
+    },
+    text: {
+        primary: "#333333", // Dark Grey text
+        secondary: "#666666", // Medium Grey text
+    },
+};
+
 const theme = createTheme({
     typography: {
         fontFamily: roboto.style.fontFamily,
     },
-    palette: pastelColors,
+    palette: differentColors,
 });
 
 export default theme;
