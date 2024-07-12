@@ -7,7 +7,7 @@
 
 ---
 
-## Test: EBUDDY PTE. LTD. Technical Test
+## EBUDDY PTE. LTD. Technical Test
 
 ### Part 1: Backend Setup
 

@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Tech Stack
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next-dot-js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=mui&logoColor=white)
+![Formik](https://img.shields.io/badge/Formik-FF5733?style=for-the-badge&logo=formik&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-55c57a?style=for-the-badge&logoColor=white)
 
 ## Getting Started
 
-First, run the development server:
+To get a local copy up and running
+Populate the enviroment vairables accordingly
+follow these steps:
 
 ```bash
+git clone [repo]
+cd your-repo
+npm install 
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Authentication
+- Firebase authentication using email and password, token verification on the server
+- Using auth provider to keep the user details and token
+- Routing based on sign in, sign out and unauthorized 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Validation
+- Type safe form validations using Zod schema
+- Api response and request object parsing
+- Consistent schemas for frontend and backend
 
-## Learn More
+## API / Error Handling
+- Axios with type safe wrapper to make api calls
+- Custom error handling using interceptors
 
-To learn more about Next.js, take a look at the following resources:
+## User Interface
+- Material UI interface with custom theme
+- Loading signs, response web design and proper color scheme
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## State Management
+- Global statement using redux-toolkit, setup of slices and store
+- Using selectors to subscribe to store changes, such as notifications and users
