@@ -1,18 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { auth } from "../config/firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { admin } from "../config/firebaseConfig";
 
-export const authenticate = async (req: Request, res: Response, next: NextFunction) => {
-    // const idToken = req.headers.authorization?.split("Bearer ")[1];
-    // if (!idToken) {
-    //     return res.status(401).send("Unauthorized");
-    // }
-    // try {
-    //     auth.
-    //     //const decodedToken = await admin.auth().verifyIdToken(idToken);
-    //     (req as any).user = decodedToken;
-    //     next();
-    // } catch (error) {
-    //     return res.status(401).send("Invalid authorization token");
-    // }
+// Middleware to verify Firebase ID token
+export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
+    if (!idToken) {
+        return res.status(400).send("Auth token not provided.");
+    }
+
+    try {
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        res.locals.uid = decodedToken.uid;
+        next();
+    } catch (error) {
+        return res.status(403).send("Invalid token.");
+    }
 };

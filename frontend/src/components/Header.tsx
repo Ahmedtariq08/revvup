@@ -1,16 +1,19 @@
 "use client";
 import { signOutFb } from "@/apis/auth";
+import { getAllUsers } from "@/apis/users";
 import { useAuth } from "@/hooks/useAuth";
 import { Severity, showNotification } from "@/store/slices/notificationSlice";
 import { useAppDispatch } from "@/store/store";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import GetAppIcon from "@mui/icons-material/GetApp";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
 import { Button, useMediaQuery, useTheme } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { useRouter } from "next/navigation";
 
 const Header = () => {
@@ -31,17 +34,17 @@ const Header = () => {
             sendAuthNotificiation(response.error?.message);
         } else {
             sendAuthNotificiation("Logout Success!", "success");
-            router.push("/");
+            //router.push("/");
         }
     };
 
-    const clickGetUsers = () => {
-        console.log("fetching users..");
+    const clickSignIn = () => {
+        router.push("/");
     };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" sx={{ bgcolor: "darkgreen" }}>
+            <AppBar position="static" color="secondary">
                 <Toolbar>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Welcome, {user?.displayName}!
@@ -52,41 +55,40 @@ const Header = () => {
                                 size="large"
                                 edge="start"
                                 aria-label="menu"
-                                title="Get users"
-                                color="secondary"
-                                sx={{ mr: 2 }}
-                                onClick={clickGetUsers}
+                                title="Sign Out"
+                                onClick={clickLogout}
                             >
-                                <GetAppIcon />
+                                <LockPersonIcon />
                             </IconButton>
                             <IconButton
                                 size="large"
                                 edge="start"
                                 aria-label="menu"
-                                title="Logout"
-                                onClick={clickLogout}
+                                title="Sign In"
+                                sx={{ ml: 1 }}
+                                onClick={clickSignIn}
                             >
-                                <AccountCircle />
+                                <LockOpenIcon />
                             </IconButton>
                         </>
                     ) : (
                         <>
                             <Button
-                                color="secondary"
                                 variant="contained"
-                                startIcon={<GetAppIcon />}
-                                sx={{ mr: 2 }}
-                                onClick={clickGetUsers}
+                                color="primary"
+                                onClick={clickLogout}
+                                startIcon={<LockPersonIcon />}
                             >
-                                Get Users
+                                Sign Out
                             </Button>
                             <Button
                                 variant="contained"
-                                sx={{ bgcolor: "gray" }}
-                                onClick={clickLogout}
-                                startIcon={<AccountCircle />}
+                                color="primary"
+                                onClick={clickSignIn}
+                                sx={{ ml: 2 }}
+                                startIcon={<LockOpenIcon />}
                             >
-                                Logout
+                                Sign In
                             </Button>
                         </>
                     )}

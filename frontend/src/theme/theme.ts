@@ -134,11 +134,31 @@ const differentColors = {
     },
 };
 
+const testColors = {
+    primary: {
+        main: "#0e1424",
+    },
+    secondary: {
+        main: "#374254",
+    },
+    background: {
+        default: "#ececec",
+        paper: "#adbbc6",
+    },
+    text: {
+        primary: "#0e1424",
+        secondary: "#374254",
+    },
+    grey: {
+        500: "#8a8fa3",
+    },
+};
+
 const theme = createTheme({
     typography: {
         fontFamily: roboto.style.fontFamily,
     },
-    palette: differentColors,
+    palette: testColors,
 });
 
 export default theme;

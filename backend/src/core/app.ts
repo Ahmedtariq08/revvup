@@ -18,7 +18,7 @@ app.use(
 
 app.use("/users", userRouter);
 app.get("/", (req: Request, res: Response) => {
-    res.send("Ebuddy test backend running...");
+    res.status(200).send("Application backend up and running...");
 });
 
 app.listen(PORT, () => {

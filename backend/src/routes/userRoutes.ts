@@ -1,83 +1,80 @@
 import { Request, Response, Router } from "express";
-import { auth, admin } from "../config/firebaseConfig";
+import { db } from "../config/firebaseConfig";
 import { handleError } from "../entities/ApiError";
-import {
-    BaseUser,
-    BaseUserSchema,
-    SignInSchema,
-    SignInUser,
-    SignUpSchema,
-    SignUpUser,
-    UpdateUser,
-    UpdateUserSchema,
-} from "../repository/userCollection";
-import {
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword,
-} from "firebase/auth";
-// import {
-//     LoggedInUserSchema,
-//     UserSchema,
-//     SignInSchema,
-//     SignInUser,
-//     SignUpSchema,
-//     SignUpUser,
-// } from "../validation/auth.schema";
-import { convertToDisplayName, splitDisplayName } from "../utils";
+import { verifyToken } from "../middleware/authMiddleware";
+import { CreateUser, CreateUserSchema, User } from "../repository/userCollection";
 
 const userRouter = Router();
 
-userRouter.post("/sign-up", async (req: Request, res: Response) => {
+// userRouter.post("/sign-up", async (req: Request, res: Response) => {
+//     try {
+//         const user: SignUpUser = SignUpSchema.parse(req.body);
+//         const userCredentials = await admin.auth().createUser(user);
+//         const userResponse: BaseUser = BaseUserSchema.parse(userCredentials);
+//         return res.status(200).json(userResponse);
+//     } catch (error) {
+//         const { status, message } = handleError(error, "Unable to sign up");
+//         return res.status(status).send(message);
+//     }
+// });
+
+// userRouter.post("/sign-in", async (req: Request, res: Response) => {
+//     try {
+//         const user: SignInUser = SignInSchema.parse(req.body);
+//         const response = await signInWithEmailAndPassword(
+//             auth,
+//             user.email,
+//             user.password,
+//         );
+//         //TODO -
+//         return res.status(200).json(response);
+//     } catch (error) {
+//         const { status, message } = handleError(error, "Unable to log in the user.");
+//         console.log(message);
+//         return res.status(status).send(message);
+//     }
+// });
+
+userRouter.get("/fetch-user-data", verifyToken, async (req: Request, res: Response) => {
     try {
-        const user: SignUpUser = SignUpSchema.parse(req.body);
-        const userCredentials = await admin.auth().createUser(user);
-        const userResponse: BaseUser = BaseUserSchema.parse(userCredentials);
-        return res.status(200).json(userResponse);
+        const usersSnapshot = await db.collection("Users").get();
+        const users: any[] = [];
+        usersSnapshot.forEach((doc) => {
+            users.push({ id: doc.id, ...doc.data() });
+        });
+        res.status(200).json(users);
     } catch (error) {
-        const { status, message } = handleError(error, "Unable to sign up");
-        return res.status(status).send(message);
+        const { message, status } = handleError(error, "Unable to fetch users.");
+        res.status(status).send(message);
     }
 });
 
-userRouter.post("/sign-in", async (req: Request, res: Response) => {
+userRouter.post("/create-user", verifyToken, async (req: Request, res: Response) => {
     try {
-        const user: SignInUser = SignInSchema.parse(req.body);
-        const response = await signInWithEmailAndPassword(
-            auth,
-            user.email,
-            user.password,
-        );
-        //TODO -
-        return res.status(200).json(response);
+        const user: CreateUser = CreateUserSchema.parse(req.body);
+        const docRef = await db.collection("Users").add(user);
+        const createdUser: User = {
+            id: docRef.id,
+            ...user,
+        };
+        return res.status(201).json(createdUser);
     } catch (error) {
-        const { status, message } = handleError(error, "Unable to log in the user.");
-        console.log(message);
-        return res.status(status).send(message);
+        const { message, status } = handleError(error, "Unable to create user.");
+        res.status(status).send(message);
     }
 });
 
-userRouter.get("/fetch-user-data", async (req: Request, res: Response) => {
-    try {
-        const users = await admin.auth().listUsers();
-        const responseUsers = users.users.map((user) => BaseUserSchema.parse(user));
-        return res.status(200).json(responseUsers);
-    } catch (error) {
-        const { status, message } = handleError(error, "Unable fetch all users.");
-        return res.status(status).send(message);
-    }
-});
-
-userRouter.post("/update-user-data", async (req: Request, res: Response) => {
-    try {
-        const user: UpdateUser = UpdateUserSchema.parse(req.body);
-        const { uid, ...rest } = user;
-        const updatedUser = await admin.auth().updateUser(user.uid, rest);
-        const userResponse: BaseUser = BaseUserSchema.parse(updatedUser);
-        return res.status(200).json(userResponse);
-    } catch (error) {
-        const { status, message } = handleError(error, "Unable to update user");
-        return res.status(status).send(message);
-    }
-});
+// userRouter.post("/update-user-data", async (req: Request, res: Response) => {
+//     try {
+//         const user: UpdateUser = UpdateUserSchema.parse(req.body);
+//         const { uid, ...rest } = user;
+//         const updatedUser = await admin.auth().updateUser(user.uid, rest);
+//         const userResponse: BaseUser = BaseUserSchema.parse(updatedUser);
+//         return res.status(200).json(userResponse);
+//     } catch (error) {
+//         const { status, message } = handleError(error, "Unable to update user");
+//         return res.status(status).send(message);
+//     }
+// });
 
 export default userRouter;

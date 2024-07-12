@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
 import { notificationReducer } from "./slices/notificationSlice";
+import { usersReducer } from "./slices/usersSlice";
 
 export const store = configureStore({
-    reducer: { notification: notificationReducer },
+    reducer: { notification: notificationReducer, users: usersReducer },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({ serializableCheck: false }),
 });

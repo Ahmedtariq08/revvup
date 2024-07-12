@@ -1,12 +1,12 @@
-import { BaseUser, SignInUser, SignUpUser } from "@/types/auth.schema";
-import { ApiResponse, handleError, handleResponse, requests } from "./client";
-import firebase_app from "../config/firebase";
+import { SignInUser, SignUpUser } from "@/types/auth.schema";
 import {
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    getAuth,
     UserCredential,
+    createUserWithEmailAndPassword,
+    getAuth,
+    signInWithEmailAndPassword,
 } from "firebase/auth";
+import firebase_app from "../config/firebase";
+import { ApiResponse } from "./client";
 
 // Firebase Auth
 const auth = getAuth(firebase_app);

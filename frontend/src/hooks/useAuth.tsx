@@ -11,6 +11,7 @@ export const useAuth = () => {
     useEffect(() => {
         setLoading(true);
         auth.onAuthStateChanged(function handleAuth(user) {
+            console.log(user);
             setUser(user ?? null);
             setLoading(false);
         });
