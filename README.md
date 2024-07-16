@@ -1,13 +1,6 @@
-# Application for Technical Test - EBUDDY PTE LTD
-
-#### This repository is a submission of the technical test to Ebuddy Pte Ltd and must be served only for application reviewing purposes.
-
+# Task
 **Developer:** Ahmed Bin Tariq  
 **Date:** 12 July, 2024
-
----
-
-## EBUDDY PTE. LTD. Technical Test
 
 ### Part 1: Backend Setup
 
