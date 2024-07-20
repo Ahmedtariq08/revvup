@@ -1,9 +1,8 @@
 // src/index.js
-import express, { Express, Request, Response } from "express";
-import * as functions from "firebase-functions";
-import userRouter from "../routes/userRoutes";
 import cors from "cors";
+import express, { Express, Request, Response } from "express";
 import { CLIENT_URL, PORT } from "../config/config";
+import userRouter from "../routes/userRoutes";
 
 const app: Express = express();
 app.use(express.json());
@@ -26,4 +25,4 @@ app.listen(PORT, () => {
     console.log(`[server]: Server is running at ${PORT}`);
 });
 
-export const api = functions.https.onRequest(app);
+export { app };
