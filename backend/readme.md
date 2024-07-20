@@ -6,16 +6,14 @@
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
 
-## Getting Started
+## Setup
 
-To get a local copy up and running, follow these steps:
-
-```bash
-git clone [repo]
-cd your-repo
-npm install 
-npm run dev
-```
+1. Clone the repository
+2. Navigate to the backend directory: `cd backend`
+3. Install dependencies: `npm install`
+4. Copy `.env.prototype` to `.env`: `cp .env.prototype .env`
+5. Fill in your Firebase project details in the `.env` file
+6. Build and start the emulators: `npm run serve`
 
 # User Management API
 This API provides functionalities to manage users in the application. It allows you to fetch, create, update, and delete users.

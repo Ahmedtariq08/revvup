@@ -7,18 +7,13 @@
 ![Formik](https://img.shields.io/badge/Formik-FF5733?style=for-the-badge&logo=formik&logoColor=white)
 ![Zod](https://img.shields.io/badge/Zod-55c57a?style=for-the-badge&logoColor=white)
 
-## Getting Started
-
-To get a local copy up and running
-Populate the enviroment vairables accordingly
-follow these steps:
-
-```bash
-git clone [repo]
-cd your-repo
-npm install 
-npm run dev
-```
+# Setup
+1. Navigate to frontend directory from backend `cd ..`
+2. Install dependencies: `npm install`
+3. Copy `.env.prototype` to `.env`: `cp .env.prototype .env`
+4. Fill in your Firebase project details in the `.env` file
+5. Build and start the nextjs frontend: `npm run dev`
+  
 
 # Features
 
