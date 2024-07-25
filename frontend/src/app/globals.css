@@ -1,14 +1,16 @@
-footer.footer {
-  position: absolute;
-  bottom: 0;
-  width: -webkit-fill-available;
-  background: #f1f1f1;
-  padding: 1rem;
-  text-align: center;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-rounded/css/uicons-solid-rounded.css');
+
+
+.bebas-neue-regular {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 600;
+  font-style: normal;
 }
 
-.table {
-  width:'95%';
-  display:'block';
-  overflow:'auto';
+.teal-btn {
+  @apply bg-teal-500 text-white font-bold py-2 px-6 rounded-xl shadow-xl hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-opacity-75; 
 }
+

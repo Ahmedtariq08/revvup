@@ -1,8 +1,5 @@
-"use client";
-import AuthForm from "@/components/AuthForm";
-
 const SignUpPage = () => {
-    return <AuthForm isSignIn={false} />;
+    return <div>Sign up</div>;
 };
 
 export default SignUpPage;
