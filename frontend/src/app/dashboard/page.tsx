@@ -1,10 +1,10 @@
-import { Footer } from "@/components/Footer";
-import { NavBar } from "@/components/layout/NavBar";
+import { Footer } from "@/components/layout/Footer";
+import NavBarWithDrawer from "@/components/layout/NavBar";
 
 const Dashboard = () => {
     return (
         <div>
-            <NavBar />
+            <NavBarWithDrawer />
             {/* <Footer /> */}
         </div>
     );
