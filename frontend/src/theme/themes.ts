@@ -5,10 +5,8 @@ const themes = [
     "emerald",
     "corporate",
     "dracula",
-    "cmyk",
     "autumn",
     "business",
-    "acid",
     "nord",
     "sunset",
 ];

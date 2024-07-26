@@ -1,27 +1,32 @@
-import { BuyCarIcon, CarMaintenanceIcon, SellCarIcon } from "@/components/common/icons";
+import {
+    AboutIcon,
+    BuyCarIcon,
+    CarMaintenanceIcon,
+    FaqIcon,
+    SellCarIcon,
+} from "@/components/common/icons";
 
 export interface NavElement {
     label: string;
     route: string;
-    showInSidebar: boolean;
     nestedElements?: NavElement[];
     icon?: React.ComponentType<any>;
 }
 
 export const NavElements: NavElement[] = [
-    { label: "Buy", route: "buy", showInSidebar: true, icon: BuyCarIcon },
-    { label: "Sell", route: "sell", showInSidebar: true, icon: SellCarIcon },
+    { label: "Buy", route: "buy", icon: BuyCarIcon },
+    { label: "Sell", route: "sell", icon: SellCarIcon },
     {
         label: "Services",
         route: "services",
-        showInSidebar: true,
+
         icon: CarMaintenanceIcon,
         nestedElements: [
-            { label: "Insurance", route: "insurance", showInSidebar: true },
-            { label: "Dealership", route: "dealership", showInSidebar: true },
-            { label: "Auto Workshop", route: "workshop", showInSidebar: true },
+            { label: "Insurance", route: "insurance" },
+            { label: "Dealership", route: "dealership" },
+            { label: "Auto Workshop", route: "workshop" },
         ],
     },
-    { label: "FAQ", route: "faq", showInSidebar: false },
-    { label: "About", route: "about", showInSidebar: false },
+    { label: "FAQ", route: "faq", icon: FaqIcon },
+    { label: "About", route: "about", icon: AboutIcon },
 ];

@@ -7,6 +7,7 @@ import { SideBarIcon, SignInIcon, ThemeIcon, WheelIcon } from "../common/icons";
 
 // TODO -
 // 1. Dropdowns in nabar must close on clicking outside
+// 2. Add icons for all other nav elements
 
 interface NavMenuProps {
     navElements: NavElement[];
@@ -21,8 +22,8 @@ const NavMenu: React.FC<NavMenuProps> = ({ navElements, showIcons, className }) 
             <li key={`${nav.route}-${index}`}>
                 {!nav.nestedElements ? (
                     <a href={nav.route}>
-                        {showIcons && IconComponent && (
-                            <span className="mr-2">
+                        {IconComponent && (
+                            <span>
                                 <IconComponent />
                             </span>
                         )}
@@ -31,8 +32,8 @@ const NavMenu: React.FC<NavMenuProps> = ({ navElements, showIcons, className }) 
                 ) : (
                     <details>
                         <summary>
-                            {showIcons && IconComponent && (
-                                <span className="mr-2">
+                            {IconComponent && (
+                                <span>
                                     <IconComponent />
                                 </span>
                             )}
@@ -89,7 +90,9 @@ const NavBar = () => {
 
             <div className="navbar-start">
                 <WheelIcon width={30} height={30} classes="hidden lg:inline" />
-                <span className="text-2xl font-bold text-center ml-3">{TITLE}</span>
+                <span className="text-2xl font-bold text-center ml-3 text-accent">
+                    <strong>{TITLE}</strong>
+                </span>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <NavMenu
@@ -159,10 +162,12 @@ const NavBarWithDrawer = () => {
                         <button className="btn btn-ghost text-xl">
                             <WheelIcon width={30} height={30} />
                         </button>
-                        <span className="text-2xl font-bold text-center">{TITLE}</span>
+                        <span className="text-2xl font-bold text-center text-accent">
+                            <strong>{TITLE}</strong>
+                        </span>
                     </div>
-                    <br />
-                    <div className="sidebar w-64 h-full bg-gray-100 shadow-md rounded-lg">
+                    <hr className="border-t border-neutral" />
+                    <div className="sidebar w-64 h-full shadow-md rounded-lg mt-5">
                         <NavMenu
                             navElements={NavElements}
                             showIcons={true}

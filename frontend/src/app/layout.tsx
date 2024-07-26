@@ -2,11 +2,12 @@ import ReduxProvider from "@/store/redux-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { TITLE } from "@/constants/global";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Wheels & Deals",
+    title: TITLE,
     description: "Developed by Ahmed",
 };
 
