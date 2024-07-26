@@ -1,6 +1,6 @@
 "use client";
 import { TITLE } from "@/constants/global";
-import { NavElement, NavElements } from "@/constants/navigation";
+import { NavElement, NavElements, Routes } from "@/constants/navigation";
 import { ThemesWithLabel } from "@/theme/themes";
 import { useEffect, useRef, useState } from "react";
 import { SideBarIcon, SignInIcon, ThemeIcon, WheelIcon } from "../common/icons";
@@ -132,10 +132,10 @@ const NavBar = () => {
                     </li>
 
                     <li>
-                        <button className="btn btn-ghost">
+                        <a href={Routes.SignIn} className="btn btn-ghost">
                             <SignInIcon />
                             <span className="hidden lg:inline">Sign in</span>
-                        </button>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -143,13 +143,17 @@ const NavBar = () => {
     );
 };
 
-const NavBarWithDrawer = () => {
+const NavBarWithDrawer = ({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) => {
     return (
         <div className="drawer">
             <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content flex flex-col">
                 <NavBar />
-                New content
+                {children}
             </div>
             <div className="drawer-side shadow-md">
                 <label
