@@ -1,8 +1,9 @@
+import { TITLE } from "@/constants/global";
 import ReduxProvider from "@/store/redux-provider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
-import { TITLE } from "@/constants/global";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
         <html lang="en" data-theme="cupcake">
             <ReduxProvider>
                 <body className={`${inter.className} app-container`}>{children}</body>
+                <Toaster />
             </ReduxProvider>
         </html>
     );

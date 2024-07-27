@@ -1,3 +1,4 @@
+import { AuthDialog } from "@/components/auth/AuthDialog";
 import NavBarWithDrawer from "@/components/layout/NavBar";
 
 export default function MainLayout({
@@ -8,6 +9,7 @@ export default function MainLayout({
     return (
         <div className="flex flex-col min-h-screen mx-auto">
             <NavBarWithDrawer>{children}</NavBarWithDrawer>
+            <AuthDialog />
         </div>
     );
 }

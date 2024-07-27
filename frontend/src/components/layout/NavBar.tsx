@@ -4,6 +4,8 @@ import { NavElement, NavElements, Routes } from "@/constants/navigation";
 import { ThemesWithLabel } from "@/theme/themes";
 import { useEffect, useRef, useState } from "react";
 import { SideBarIcon, SignInIcon, ThemeIcon, WheelIcon } from "../common/icons";
+import { openAuthDialog } from "../auth/AuthDialog";
+import { toast } from "sonner";
 
 // TODO -
 // 1. Dropdowns in nabar must close on clicking outside
@@ -132,10 +134,10 @@ const NavBar = () => {
                     </li>
 
                     <li>
-                        <a href={Routes.SignIn} className="btn btn-ghost">
+                        <button className="btn btn-ghost" onClick={openAuthDialog}>
                             <SignInIcon />
                             <span className="hidden lg:inline">Sign in</span>
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
