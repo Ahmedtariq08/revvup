@@ -4,7 +4,7 @@ import { NavElement, NavElements, Routes } from "@/constants/navigation";
 import { ThemesWithLabel } from "@/theme/themes";
 import { useEffect, useRef, useState } from "react";
 import { SideBarIcon, SignInIcon, ThemeIcon, WheelIcon } from "../common/icons";
-import { openAuthDialog } from "../auth/AuthDialog";
+import { openSignInDialog } from "../auth/SignInDialog";
 import { toast } from "sonner";
 
 // TODO -
@@ -134,7 +134,7 @@ const NavBar = () => {
                     </li>
 
                     <li>
-                        <button className="btn btn-ghost" onClick={openAuthDialog}>
+                        <button className="btn btn-ghost" onClick={openSignInDialog}>
                             <SignInIcon />
                             <span className="hidden lg:inline">Sign in</span>
                         </button>

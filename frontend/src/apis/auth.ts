@@ -1,9 +1,11 @@
 import { SignInUser, SignUpUser } from "@/types/auth.schema";
 import {
+    GoogleAuthProvider,
     UserCredential,
     createUserWithEmailAndPassword,
     getAuth,
     signInWithEmailAndPassword,
+    signInWithPopup,
 } from "firebase/auth";
 import firebase_app from "../config/firebase";
 import { ApiResponse } from "./client";
@@ -32,6 +34,7 @@ const handleAuthError = (error: any): ApiResponse<null> => {
     };
 };
 
+// API Functions
 export const signUpFb = async (
     user: SignUpUser,
 ): Promise<ApiResponse<UserCredential | null>> => {
@@ -59,6 +62,16 @@ export const signInFb = async (
         return handleAuthResponse(response);
     } catch (error: any) {
         return handleAuthError(error);
+    }
+};
+
+export const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+        const result = await signInWithPopup(auth, provider);
+        return result.user;
+    } catch (error) {
+        console.error("Error signing in with Google", error);
     }
 };
 

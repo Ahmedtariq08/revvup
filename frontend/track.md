@@ -5,3 +5,6 @@
 
 ### Auth
 ![Feauture][FeatureBadge]&nbsp; - &nbsp; Sign up and storing multiple details of user \
+![Feauture][FeatureBadge]&nbsp; - &nbsp; Email verification / OTP SMS for creating account \
+![Enhancement][EnhancementBadge]&nbsp; - &nbsp; Use one form for sign-in and sign-up, clear form on close \
+

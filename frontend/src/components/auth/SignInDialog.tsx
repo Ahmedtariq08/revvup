@@ -1,60 +1,75 @@
 "use client";
+import { signInWithGoogle } from "@/apis/auth";
+import { TITLE } from "@/constants/global";
 import { SignInSchema, SignInUser } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
     ClosedEyeIcon,
-    CrossIcon,
     EmailIcon,
     GoogleIcon,
     LockIcon,
     OpenEyeIcon,
 } from "../common/icons";
-import { TITLE } from "@/constants/global";
-import { useState } from "react";
-import { toast } from "sonner";
+import { openSignUpDialog } from "./SignUpDialog";
 
-const AuthDialogId = "my_modal_2";
-export const openAuthDialog = () => {
-    const modal = document.getElementById(AuthDialogId) as HTMLDialogElement | null;
+const SignInDialogId = "signin_modal";
+export const openSignInDialog = () => {
+    const modal = document.getElementById(SignInDialogId) as HTMLDialogElement | null;
     if (modal instanceof HTMLDialogElement) {
         modal.showModal();
     }
 };
 
-export const closeAuthDialog = () => {
-    const modal = document.getElementById(AuthDialogId) as HTMLDialogElement | null;
+export const closeSignInDialog = () => {
+    const modal = document.getElementById(SignInDialogId) as HTMLDialogElement | null;
     if (modal instanceof HTMLDialogElement) {
         modal.close();
     }
 };
 
-export const AuthDialog = () => {
+export const SignInDialog = () => {
     const {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<SignInUser>({
         resolver: zodResolver(SignInSchema),
     });
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    const [showPassword, setShowPassword] = useState(false);
+    useEffect(() => {
+        return () => {
+            console.log("resetting form");
+            reset({ email: "", password: "" });
+        };
+    }, []);
 
     const onSubmit = (data: SignInUser) => {
         console.log(data);
         // Handle form submission here
     };
 
-    const handleGoogleSignIn = () => {
-        // Handle Google sign-in here
+    const handleGoogleSignIn = async () => {
+        try {
+            const user = await signInWithGoogle();
+            if (user) {
+                console.log("Signed in user:", user);
+                closeSignInDialog(); // Close the dialog after successful sign-in
+            }
+        } catch (error) {
+            console.error("Error signing in with Google:", error);
+        }
     };
 
     return (
         <div>
             <dialog
-                id={AuthDialogId}
+                id={SignInDialogId}
                 className="modal modal-bottom sm:modal-middle"
-                onClick={closeAuthDialog}
+                onClick={closeSignInDialog}
             >
                 <div className="modal-box" onClick={(e) => e.stopPropagation()}>
                     <form method="dialog"></form>
@@ -68,7 +83,7 @@ export const AuthDialog = () => {
                                 </h2>
                                 <button
                                     className="btn btn-sm absolute right-2 top-2"
-                                    onClick={closeAuthDialog}
+                                    onClick={closeSignInDialog}
                                 >
                                     <span> X</span>
                                 </button>
@@ -144,8 +159,13 @@ export const AuthDialog = () => {
                                 <p className="text-sm">
                                     Don't have an account?{" "}
                                     <a
-                                        href="/signup"
+                                        href="#"
                                         className="text-primary hover:underline"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            closeSignInDialog();
+                                            openSignUpDialog();
+                                        }}
                                     >
                                         Sign up
                                     </a>
