@@ -1,4 +1,6 @@
 import { SignInUser, SignUpUser } from "@/types/auth.schema";
+import { User } from "@/types/user.shema";
+import { convertToSchemaUser } from "@/utils";
 import {
     GoogleAuthProvider,
     UserCredential,
@@ -8,17 +10,15 @@ import {
     signInWithPopup,
 } from "firebase/auth";
 import { firebase_app } from "../config/firebase";
-import { ApiResponse, handleResponse } from "./client";
+import { ApiResponse } from "./client";
 import { createNewUser } from "./users";
 
 // Firebase Auth
 const auth = getAuth(firebase_app);
 
-const handleAuthResponse = (
-    response: UserCredential | void,
-): ApiResponse<UserCredential | null> => {
+const handleAuthResponse = <T>(response: T): ApiResponse<T> => {
     return {
-        data: response ?? null,
+        data: response,
         isSuccess: true,
         error: null,
     };
@@ -36,23 +36,23 @@ const handleAuthError = (error: any): ApiResponse<null> => {
 };
 
 // API Functions
-export const signUpFb = async (
-    user: SignUpUser,
-): Promise<ApiResponse<UserCredential | null>> => {
+export const signUpFb = async (user: SignUpUser): Promise<ApiResponse<User | null>> => {
     try {
         const response = await createUserWithEmailAndPassword(
             auth,
             user.email,
             user.password,
         );
-        console.log(response);
-        // if (response.user) {
-        //     const res = await createNewUser(user);
-        //     if (res.isSuccess) {
-        //         return handleAuthResponse(res as UserCredential);
-        //     }
-        // }
-        return handleAuthResponse(response);
+        const apiUser: User | null = convertToSchemaUser(response, user);
+        if (apiUser) {
+            const firestoreResponse = await createNewUser(apiUser);
+            if (firestoreResponse.isSuccess) {
+                return handleAuthResponse(firestoreResponse.data);
+            } else {
+                throw Error(firestoreResponse.error.message);
+            }
+        }
+        throw Error("Unable to sign up");
     } catch (error: any) {
         return handleAuthError(error);
     }
@@ -83,7 +83,7 @@ export const signInWithGoogle = async () => {
     }
 };
 
-export const signOutFb = async (): Promise<ApiResponse<UserCredential | null>> => {
+export const signOutFb = async (): Promise<ApiResponse<void | null>> => {
     try {
         const response = await auth.signOut();
         return handleAuthResponse(response);

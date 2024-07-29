@@ -1,7 +1,7 @@
 import { firebase_app } from "@/config/firebase";
 import { getAuth } from "firebase/auth";
 import { ApiResponse, requests } from "./client";
-import { CreateUser, UpdateUser, User } from "@/types/user.shema";
+import { UpdateUser, User } from "@/types/user.shema";
 
 // Firebase Auth
 const auth = getAuth(firebase_app);
@@ -11,7 +11,7 @@ export const getAllUsers = async (): Promise<ApiResponse<User[]>> => {
     return await requests.get<User[]>("/users/fetch-user-data", token);
 };
 
-export const createNewUser = async (user: CreateUser): Promise<ApiResponse<User>> => {
+export const createNewUser = async (user: User): Promise<ApiResponse<User>> => {
     const token = (await auth.currentUser?.getIdToken()) ?? "";
     return await requests.post<User>("/users/create-user", token, user);
 };

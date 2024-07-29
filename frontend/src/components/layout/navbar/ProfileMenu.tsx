@@ -45,10 +45,16 @@ export const ProfileMenu = () => {
                 <summary>
                     <div className="avatar">
                         <div className="ring-primary ring-offset-base-100 w-6 rounded-full ring ring-offset-2">
-                            <img width={20} height={20} src={user?.photoURL ?? ""} />
+                            <img
+                                width={20}
+                                height={20}
+                                src={user?.photoURL ?? "/icons/user3.png"}
+                            />
                         </div>
                     </div>
-                    <span className="hidden lg:inline">{user?.displayName ?? ""}</span>
+                    <span className="hidden lg:inline ml-1">
+                        {user?.displayName ?? ""}
+                    </span>
                 </summary>
                 <ul className="bg-base-100  p-2">
                     <li key="#myProfile">

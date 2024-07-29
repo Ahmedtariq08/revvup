@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { isRequired, minChars } from "../utils";
 
+export const USERS_COLLECTION = "Users";
+// User types and schema
 const UserSchema = z.object({
     uid: z.string({ message: isRequired("Uid") }),
     email: z

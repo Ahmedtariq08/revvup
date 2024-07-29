@@ -2,23 +2,18 @@ import { Request, Response, Router } from "express";
 import { db } from "../config/firebaseConfig";
 import { handleError } from "../entities/ApiError";
 import { verifyToken } from "../middleware/authMiddleware";
-import {
-    CreateUser,
-    CreateUserSchema,
-    UpdateUser,
-    UpdateUserSchema,
-    User,
-} from "../repository/userCollection";
+import { User, UserSchema } from "../validation/user.validation";
 
 const userRouter = Router();
+const UserCollection = "Users";
 
 /* Get all users */
 userRouter.get("/fetch-user-data", verifyToken, async (req: Request, res: Response) => {
     try {
-        const usersSnapshot = await db.collection("Users").get();
-        const users: any[] = [];
+        const usersSnapshot = await db.collection(UserCollection).get();
+        const users: User[] = [];
         usersSnapshot.forEach((doc) => {
-            users.push({ id: doc.id, ...doc.data() });
+            users.push({ uid: doc.id, ...doc.data() } as User);
         });
         res.status(200).json(users);
     } catch (error) {
@@ -30,15 +25,19 @@ userRouter.get("/fetch-user-data", verifyToken, async (req: Request, res: Respon
 /* Create a new user */
 userRouter.post("/create-user", verifyToken, async (req: Request, res: Response) => {
     try {
-        const user: CreateUser = CreateUserSchema.parse(req.body);
-        const docRef = await db.collection("Users").add(user);
-        const createdUser: User = {
-            id: docRef.id,
-            ...user,
-        };
-        return res.status(201).json(createdUser);
+        const user: User = UserSchema.parse(req.body);
+        const currentUid = res.locals.uid;
+        const { uid, ...data } = user;
+        console.log(currentUid);
+        if (currentUid !== uid) {
+            return res
+                .status(400)
+                .send("Uid does not match. You can only create your own user.");
+        }
+        await db.collection(UserCollection).doc(uid).set(data);
+        return res.status(201).json(user);
     } catch (error) {
-        const { message, status } = handleError(error, "Unable to create user.");
+        const { status, message } = handleError(error, "Unable to create user.");
         res.status(status).send(message);
     }
 });
@@ -46,16 +45,19 @@ userRouter.post("/create-user", verifyToken, async (req: Request, res: Response)
 /* Update existing user */
 userRouter.post("/update-user-data", verifyToken, async (req: Request, res: Response) => {
     try {
-        const user: UpdateUser = UpdateUserSchema.parse(req.body);
-        const userDoc = db.collection("Users").doc(user.id);
-        const docSnapshot = await userDoc.get();
-        if (!docSnapshot.exists) {
-            return res.status(404).send("User not found");
+        const user: User = UserSchema.parse(req.body);
+        const currentUid = res.locals.uid;
+        const { uid, ...data } = user;
+        console.log(currentUid);
+        if (currentUid !== uid) {
+            return res
+                .status(400)
+                .send("Uid does not match. You can only update your own user data.");
         }
-        await userDoc.update(user);
-        res.status(200).json(user);
+        await db.collection(UserCollection).doc(uid).set(data);
+        return res.status(200).json(user);
     } catch (error) {
-        const { message, status } = handleError(error, "Unable to update user.");
+        const { status, message } = handleError(error, "Unable to update user.");
         res.status(status).send(message);
     }
 });
