@@ -1,5 +1,5 @@
 "use client";
-import { signInWithGoogle } from "@/apis/auth";
+import { signInFb, signInWithGoogle } from "@/apis/auth";
 import { TITLE } from "@/constants/global";
 import { SignInSchema, SignInUser } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,7 @@ import {
     OpenEyeIcon,
 } from "../common/icons";
 import { openSignUpDialog } from "./SignUpDialog";
+import { toast } from "sonner";
 
 const SignInDialogId = "signin_modal";
 export const openSignInDialog = () => {
@@ -33,34 +34,29 @@ export const SignInDialog = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
-        reset,
+        formState: { errors, isSubmitting },
     } = useForm<SignInUser>({
         resolver: zodResolver(SignInSchema),
     });
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
-    useEffect(() => {
-        return () => {
-            console.log("resetting form");
-            reset({ email: "", password: "" });
-        };
-    }, []);
-
-    const onSubmit = (data: SignInUser) => {
-        console.log(data);
-        // Handle form submission here
+    const onSubmit = async (data: SignInUser) => {
+        const response = await signInFb(data);
+        if (response.isSuccess) {
+            closeSignInDialog();
+        } else {
+            toast.error(`Unable to log in. ${response.error?.message}`);
+        }
     };
 
     const handleGoogleSignIn = async () => {
         try {
             const user = await signInWithGoogle();
             if (user) {
-                console.log("Signed in user:", user);
-                closeSignInDialog(); // Close the dialog after successful sign-in
+                closeSignInDialog();
             }
         } catch (error) {
-            console.error("Error signing in with Google:", error);
+            toast.error(`Unable to sign in with google.`);
         }
     };
 
@@ -142,7 +138,11 @@ export const SignInDialog = () => {
                                 )}
                                 <div className="form-control mt-6">
                                     <button type="submit" className="btn btn-secondary">
-                                        Sign In
+                                        {isSubmitting ? (
+                                            <span className="loading loading-bars loading-sm"></span>
+                                        ) : (
+                                            "Sign In"
+                                        )}
                                     </button>
                                 </div>
                             </form>
@@ -158,9 +158,8 @@ export const SignInDialog = () => {
                             <div className="text-center mt-4">
                                 <p className="text-sm">
                                     Don't have an account?{" "}
-                                    <a
-                                        href="#"
-                                        className="text-primary hover:underline"
+                                    <button
+                                        className="btn bnt-sm btn-link p-1 btn-primary"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             closeSignInDialog();
@@ -168,7 +167,7 @@ export const SignInDialog = () => {
                                         }}
                                     >
                                         Sign up
-                                    </a>
+                                    </button>
                                 </p>
                             </div>
                         </div>

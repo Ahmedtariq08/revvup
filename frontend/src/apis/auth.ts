@@ -7,8 +7,9 @@ import {
     signInWithEmailAndPassword,
     signInWithPopup,
 } from "firebase/auth";
-import firebase_app from "../config/firebase";
-import { ApiResponse } from "./client";
+import { firebase_app } from "../config/firebase";
+import { ApiResponse, handleResponse } from "./client";
+import { createNewUser } from "./users";
 
 // Firebase Auth
 const auth = getAuth(firebase_app);
@@ -44,6 +45,13 @@ export const signUpFb = async (
             user.email,
             user.password,
         );
+        console.log(response);
+        // if (response.user) {
+        //     const res = await createNewUser(user);
+        //     if (res.isSuccess) {
+        //         return handleAuthResponse(res as UserCredential);
+        //     }
+        // }
         return handleAuthResponse(response);
     } catch (error: any) {
         return handleAuthError(error);

@@ -1,4 +1,4 @@
-import firebase_app from "@/config/firebase";
+import { firebase_app } from "@/config/firebase";
 import { getAuth } from "firebase/auth";
 import { ApiResponse, requests } from "./client";
 import { CreateUser, UpdateUser, User } from "@/types/user.shema";

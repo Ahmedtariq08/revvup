@@ -20,8 +20,10 @@ export default function RootLayout({
     return (
         <html lang="en" data-theme="cupcake">
             <ReduxProvider>
-                <body className={`${inter.className} app-container`}>{children}</body>
-                <Toaster />
+                <body className={`${inter.className} app-container`}>
+                    {children}
+                    <Toaster richColors />
+                </body>
             </ReduxProvider>
         </html>
     );

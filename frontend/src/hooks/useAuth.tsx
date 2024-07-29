@@ -1,4 +1,4 @@
-import firebase_app from "@/config/firebase";
+import { firebase_app } from "@/config/firebase";
 import { User, getAuth } from "firebase/auth";
 import { useEffect, useState } from "react";
 

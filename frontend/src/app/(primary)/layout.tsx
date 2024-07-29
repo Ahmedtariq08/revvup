@@ -1,6 +1,6 @@
 import { SignInDialog } from "@/components/auth/SignInDialog";
 import { SignUpDialog } from "@/components/auth/SignUpDialog";
-import NavBarWithDrawer from "@/components/layout/NavBar";
+import NavBarWithDrawer from "@/components/layout/navbar/NavBarWithDrawer";
 
 export default function MainLayout({
     children,

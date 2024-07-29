@@ -1,19 +1,18 @@
 "use client";
-import { signInWithGoogle } from "@/apis/auth";
-import { TITLE } from "@/constants/global";
-import { SignInSchema, SignInUser, SignUpSchema, SignUpUser } from "@/types/auth.schema";
+import { SignInUser, SignUpSchema, SignUpUser } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
     ClosedEyeIcon,
     EmailIcon,
-    GoogleIcon,
     LockIcon,
     OpenEyeIcon,
     UserIcon,
 } from "../common/icons";
 import { openSignInDialog } from "./SignInDialog";
+import { signUpFb } from "@/apis/auth";
+import { toast } from "sonner";
 
 const SignUpDialogId = "signup_modal";
 export const openSignUpDialog = () => {
@@ -34,15 +33,26 @@ export const SignUpDialog = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<SignUpUser>({
         resolver: zodResolver(SignUpSchema),
     });
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [photo, setPhoto] = useState<File | null>(null);
 
-    const onSubmit = (data: SignInUser) => {
-        console.log(data);
-        // Handle form submission here
+    const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setPhoto(e.target.files[0]);
+        }
+    };
+
+    const onSubmit = async (data: SignUpUser) => {
+        const response = await signUpFb(data);
+        if (response.isSuccess) {
+            closeSignUpDialog();
+        } else {
+            toast.error(`Unable to sign up ${response.error.message}`);
+        }
     };
 
     return (
@@ -140,12 +150,19 @@ export const SignUpDialog = () => {
                                 <div className="form-control mt-4">
                                     <input
                                         type="file"
+                                        placeholder="Profile photo"
+                                        accept="image/*"
+                                        onChange={handlePhotoChange}
                                         className="file-input file-input-bordered file-input-sm file-input-primary w-full max-w-xs"
                                     />
                                 </div>
                                 <div className="form-control mt-6">
                                     <button type="submit" className="btn btn-secondary">
-                                        Create Account
+                                        {isSubmitting ? (
+                                            <span className="loading loading-bars loading-sm"></span>
+                                        ) : (
+                                            "Create Account"
+                                        )}
                                     </button>
                                 </div>
                             </form>
@@ -153,9 +170,8 @@ export const SignUpDialog = () => {
                             <div className="text-center mt-4">
                                 <p className="text-sm">
                                     Already have an account?{" "}
-                                    <a
-                                        href="#"
-                                        className="text-primary hover:underline"
+                                    <button
+                                        className="btn bnt-sm btn-link p-1 btn-primary"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             closeSignUpDialog();
@@ -163,7 +179,7 @@ export const SignUpDialog = () => {
                                         }}
                                     >
                                         Sign in
-                                    </a>
+                                    </button>
                                 </p>
                             </div>
                         </div>
