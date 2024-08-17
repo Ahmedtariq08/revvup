@@ -1,8 +1,10 @@
 "use client";
-import { SignInUser, SignUpSchema, SignUpUser } from "@/types/auth.schema";
+import { signUpFb } from "@/apis/auth";
+import { SignUpSchema, SignUpUser } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
     ClosedEyeIcon,
     EmailIcon,
@@ -11,8 +13,6 @@ import {
     UserIcon,
 } from "../common/icons";
 import { openSignInDialog } from "./SignInDialog";
-import { signUpFb } from "@/apis/auth";
-import { toast } from "sonner";
 
 const SignUpDialogId = "signup_modal";
 export const openSignUpDialog = () => {
