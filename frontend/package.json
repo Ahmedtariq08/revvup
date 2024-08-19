@@ -9,9 +9,11 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@firebase/firestore": "^4.7.0",
         "@hookform/resolvers": "^3.9.0",
         "@reduxjs/toolkit": "^2.2.6",
         "axios": "^1.7.2",
+        "cloudinary": "^2.4.0",
         "firebase": "^10.12.3",
         "formik": "^2.4.6",
         "next": "14.2.5",

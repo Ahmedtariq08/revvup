@@ -1,5 +1,6 @@
 "use client";
-import { signUpFb } from "@/apis/auth";
+import { signUpFb } from "@/actions/auth.actions";
+import { uploadPhoto } from "@/config/cloudinary";
 import { SignUpSchema, SignUpUser } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useState } from "react";
@@ -46,9 +47,23 @@ export const SignUpDialog = () => {
         }
     };
 
+    const toBase64 = (file: File) =>
+        new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+        });
+
     const onSubmit = async (data: SignUpUser) => {
-        const response = await signUpFb(data);
+        let photoUrl = "";
+        if (photo) {
+            const photoUri = (await toBase64(photo)) as string;
+            photoUrl = await uploadPhoto(photoUri);
+        }
+        const response = await signUpFb(data, photoUrl);
         if (response.isSuccess) {
+            setPhoto(null);
             closeSignUpDialog();
         } else {
             toast.error(`Unable to sign up ${response.error.message}`);

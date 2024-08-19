@@ -3,7 +3,7 @@
 import { openSignInDialog } from "@/components/auth/SignInDialog";
 import { ThemeIcon, SignInIcon } from "@/components/common/icons";
 import { useAuth } from "@/hooks/useAuth";
-import { ThemesWithLabel } from "@/theme/themes";
+import { ThemesWithLabel } from "@/constants/themes";
 import { useState, useRef, useEffect } from "react";
 import { ProfileMenu } from "./ProfileMenu";
 

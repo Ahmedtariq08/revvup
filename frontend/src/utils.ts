@@ -19,21 +19,3 @@ export const formatObj = (obj: AnyObject): AnyObject => {
     }
     return newObj;
 };
-
-export const convertToSchemaUser = (
-    response: UserCredential,
-    user: SignUpUser,
-): User | null => {
-    if (response.user == null) {
-        return null;
-    }
-    const { uid, email, photoURL } = response.user;
-    return {
-        uid: uid,
-        email: email ?? "",
-        displayName: user.displayName ?? "",
-        photoURL: photoURL,
-        city: "",
-        country: "",
-    };
-};

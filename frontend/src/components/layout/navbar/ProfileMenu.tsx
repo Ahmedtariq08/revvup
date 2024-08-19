@@ -1,6 +1,5 @@
 "use client";
-
-import { signOutFb } from "@/apis/auth";
+import { signOutFb } from "@/actions/auth.actions";
 import { LogoutIcon, ProfileIcon } from "@/components/common/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useRef, useState } from "react";

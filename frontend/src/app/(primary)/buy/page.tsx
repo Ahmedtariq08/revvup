@@ -1,51 +1,28 @@
-"use client";
-import { getAllUsers } from "@/apis/users";
-import { User } from "@/types/user.shema";
-import {
-    AwaitedReactNode,
-    JSXElementConstructor,
-    Key,
-    ReactElement,
-    ReactNode,
-    ReactPortal,
-    useState,
-} from "react";
+import { getAllDealerships, getAllUsers } from "@/actions/users.actions";
 
-const BuyPage = () => {
-    const [users, setUsers] = useState<any>();
-
-    const clickBtn = async () => {
-        console.log("getting users");
-        const data = await getAllUsers();
-        if (data.isSuccess) {
-            setUsers(data?.data ?? []);
-        }
-        console.log(data);
-    };
+const BuyPage = async () => {
+    const users = await getAllUsers();
+    const dealerships = await getAllDealerships();
     return (
         <div>
             <h2>Buy a car!</h2>
-            <button className="btn btn-md" onClick={clickBtn}>
+            {/* <button className="btn btn-md" onClick={clickBtn}>
                 Click to get users data
-            </button>
+            </button> */}
             <ul>
-                {users?.data?.map(
-                    (user: {
-                        id: Key | null | undefined;
-                        email:
-                            | string
-                            | number
-                            | bigint
-                            | boolean
-                            | ReactElement<any, string | JSXElementConstructor<any>>
-                            | Iterable<ReactNode>
-                            | ReactPortal
-                            | Promise<AwaitedReactNode>
-                            | null
-                            | undefined;
-                    }) => {
-                        return <li key={user.id}>{user.email}</li>;
-                    },
+                {users?.map((user) => {
+                    return <li key={user.uid}>{user.email}</li>;
+                })}
+                {!Array.isArray(users) ? <div>Loading...</div> : <></>}
+            </ul>
+            <ul>
+                {dealerships?.map((dealership) => {
+                    return <li key={dealership?.uid}>{dealership?.city!}</li>;
+                })}
+                {!Array.isArray(dealerships) ? (
+                    <div>Loading...</div>
+                ) : (
+                    <>{dealerships.length}</>
                 )}
             </ul>
         </div>

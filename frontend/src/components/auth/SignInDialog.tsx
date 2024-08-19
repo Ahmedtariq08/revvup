@@ -1,5 +1,4 @@
 "use client";
-import { signInFb, signInWithGoogle } from "@/apis/auth";
 import { TITLE } from "@/constants/global";
 import { SignInSchema, SignInUser } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,6 +13,7 @@ import {
 } from "../common/icons";
 import { openSignUpDialog } from "./SignUpDialog";
 import { toast } from "sonner";
+import { signInFb, signInWithGoogle } from "@/actions/auth.actions";
 
 const SignInDialogId = "signin_modal";
 export const openSignInDialog = () => {
