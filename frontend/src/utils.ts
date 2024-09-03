@@ -1,7 +1,3 @@
-import { UserCredential } from "firebase/auth";
-import { User } from "./types/user.shema";
-import { SignUpUser } from "./types/auth.schema";
-
 export const isRequired = (field: string) => `${field} is required.`;
 export const minChars = (field: string, char: number) =>
     `${field} must have at least ${char} characters`;
@@ -18,4 +14,12 @@ export const formatObj = (obj: AnyObject): AnyObject => {
         }
     }
     return newObj;
+};
+
+/* Checks equality of two strings in shallow manner */
+export const areShallowEqual = (str1: string, str2: string) => {
+    if (str1 == null || str2 == null) {
+        return false;
+    }
+    return str1.trim().toLocaleUpperCase() === str2.trim().toLocaleUpperCase();
 };

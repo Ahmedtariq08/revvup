@@ -104,6 +104,7 @@ export const SignUpDialog = () => {
                                             {...register("displayName")}
                                             autoComplete="displayName"
                                             placeholder="Display Name"
+                                            style={{ width: "-webkit-fill-available" }}
                                         />
                                     </label>
                                     {errors.displayName && (
@@ -121,6 +122,7 @@ export const SignUpDialog = () => {
                                             {...register("email")}
                                             autoComplete="email"
                                             placeholder="Email"
+                                            style={{ width: "-webkit-fill-available" }}
                                         />
                                     </label>
                                     {errors.email && (

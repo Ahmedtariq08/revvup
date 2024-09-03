@@ -1,5 +1,4 @@
 "use server";
-
 import { db } from "@/config/firebase";
 import { User } from "@/types/user.shema";
 import { collection, getDocs } from "firebase/firestore";

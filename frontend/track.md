@@ -6,7 +6,7 @@
 ![Feauture][FeatureBadge]&nbsp; - &nbsp; Use nextjs server actions or api route to handle firebase 
 
 ### Auth
-![Feauture][FeatureBadge]&nbsp; - &nbsp; Sign up and storing multiple details of user \
+![Fix][FixBadge]&nbsp; - &nbsp; Photo does not load after sign up \
 ![Feauture][FeatureBadge]&nbsp; - &nbsp; Use cloudinary to upload user photo, store with user details and retrieve \
 ![Feauture][FeatureBadge]&nbsp; - &nbsp; Email verification / OTP SMS for creating account \
 ![Enhancement][EnhancementBadge]&nbsp; - &nbsp; Use one form for sign-in and sign-up, clear form on close 

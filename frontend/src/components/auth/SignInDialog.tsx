@@ -95,6 +95,7 @@ export const SignInDialog = () => {
                                             {...register("email")}
                                             autoComplete="email"
                                             placeholder="Email"
+                                            style={{ width: "-webkit-fill-available" }}
                                         />
                                     </label>
                                     {errors.email && (
@@ -113,6 +114,7 @@ export const SignInDialog = () => {
                                             autoComplete="current-password"
                                             placeholder="********"
                                             className="w-full focus:outline-none"
+                                            style={{ width: "-webkit-fill-available" }}
                                         />
                                     </label>
                                     <button
