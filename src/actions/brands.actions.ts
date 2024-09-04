@@ -1,5 +1,5 @@
-import { adminDb } from "@/config/firebaseAdmin";
 import { Brand } from "@/types/brands.schema";
+import { adminDb } from "@/utils/firebase/firebaseAdmin";
 
 export const getAllBrands = async (): Promise<Brand[]> => {
     try {

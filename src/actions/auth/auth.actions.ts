@@ -1,5 +1,5 @@
 "use client";
-import { db, firebase_app } from "@/config/firebase";
+import { db, firebase_app } from "@/utils/firebase/firebase";
 import { SignInUser, SignUpUser } from "@/types/auth.schema";
 import { ApiResponse } from "@/types/response";
 import { User } from "@/types/user.shema";
@@ -36,6 +36,7 @@ export const handleAuthError = (error: any): ApiResponse<null> => {
     };
 };
 
+// ANCHOR - Firebase
 export const signUpFb = async (
     user: SignUpUser,
     photoUrl: string,

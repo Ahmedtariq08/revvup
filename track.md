@@ -3,11 +3,12 @@
 [EnhancementBadge]: https://img.shields.io/badge/Enhancement-yellow
 
 ### General Application
-![Feauture][FeatureBadge]&nbsp; - &nbsp; Use nextjs server actions or api route to handle firebase 
+![Feauture][FeatureBadge]&nbsp; - &nbsp; Use supabase storage to serve images and files 
 
 ### Auth
 ![Fix][FixBadge]&nbsp; - &nbsp; Photo does not load after sign up \
-![Feauture][FeatureBadge]&nbsp; - &nbsp; Use cloudinary to upload user photo, store with user details and retrieve \
-![Feauture][FeatureBadge]&nbsp; - &nbsp; Email verification / OTP SMS for creating account \
-![Enhancement][EnhancementBadge]&nbsp; - &nbsp; Use one form for sign-in and sign-up, clear form on close 
+![Fix][FixBadge]&nbsp; - &nbsp; Form validation do not run for the first time \
+![Enhancement][EnhancementBadge]&nbsp; - &nbsp; Google Sign in for supabase 
+
+
 

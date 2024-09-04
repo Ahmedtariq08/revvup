@@ -1,8 +1,8 @@
 "use server";
-import { db } from "@/config/firebase";
+import { db } from "@/utils/firebase/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import brandsData from "./brands";
-import { adminDb } from "@/config/firebaseAdmin";
+import { adminDb } from "@/utils/firebaseAdmin";
 import firebase from "firebase/compat/app";
 
 const seedBrands = async () => {

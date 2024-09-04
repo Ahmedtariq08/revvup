@@ -8,6 +8,7 @@ import {
 
 /* Route paths to used across app. Add all routes here */
 export enum Routes {
+    Main = "/",
     SignIn = "/sign-in",
     SignUp = "/sign-up",
     Buy = "/buy",

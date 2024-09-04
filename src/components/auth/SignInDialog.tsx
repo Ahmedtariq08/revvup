@@ -13,7 +13,8 @@ import {
 } from "../common/icons";
 import { openSignUpDialog } from "./SignUpDialog";
 import { toast } from "sonner";
-import { signInFb, signInWithGoogle } from "@/actions/auth.actions";
+import { signInFb, signInWithGoogle } from "@/actions/auth/auth.actions";
+import { signInSupabase } from "@/actions/auth/auth.supabase";
 
 const SignInDialogId = "signin_modal";
 export const openSignInDialog = () => {
@@ -41,7 +42,8 @@ export const SignInDialog = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const onSubmit = async (data: SignInUser) => {
-        const response = await signInFb(data);
+        //const response = await signInFb(data);
+        const response = await signInSupabase(data);
         if (response.isSuccess) {
             closeSignInDialog();
         } else {
@@ -51,10 +53,11 @@ export const SignInDialog = () => {
 
     const handleGoogleSignIn = async () => {
         try {
-            const user = await signInWithGoogle();
-            if (user) {
-                closeSignInDialog();
-            }
+            console.log("Google sign in yet to implement");
+            //const user = await signInWithGoogle();
+            // if (user) {
+            //     closeSignInDialog();
+            // }
         } catch (error) {
             toast.error(`Unable to sign in with google.`);
         }

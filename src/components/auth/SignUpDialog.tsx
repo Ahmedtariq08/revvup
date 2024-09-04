@@ -1,6 +1,6 @@
 "use client";
-import { signUpFb } from "@/actions/auth.actions";
-import { uploadPhoto } from "@/config/cloudinary";
+import { signUpFb } from "@/actions/auth/auth.actions";
+import { uploadPhoto } from "@/utils/cloudinary";
 import { SignUpSchema, SignUpUser } from "@/types/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useState } from "react";
@@ -14,6 +14,7 @@ import {
     UserIcon,
 } from "../common/icons";
 import { openSignInDialog } from "./SignInDialog";
+import { signUpSupabase } from "@/actions/auth/auth.supabase";
 
 const SignUpDialogId = "signup_modal";
 export const openSignUpDialog = () => {
@@ -61,7 +62,8 @@ export const SignUpDialog = () => {
             const photoUri = (await toBase64(photo)) as string;
             photoUrl = await uploadPhoto(photoUri);
         }
-        const response = await signUpFb(data, photoUrl);
+        //const response = await signUpFb(data, photoUrl);
+        const response = await signUpSupabase(data, photoUrl);
         if (response.isSuccess) {
             setPhoto(null);
             closeSignUpDialog();

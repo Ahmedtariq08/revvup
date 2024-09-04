@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { isRequired } from "../utils";
+import { isRequired } from "../utils/utils";
 
 const BrandSchema = z.object({
     id: z.string({ message: isRequired("id") }),
