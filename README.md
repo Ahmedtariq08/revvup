@@ -1,102 +1,40 @@
-# Task
-**Developer:** Ahmed Bin Tariq  
-**Date:** 12 July, 2024
+# Tech Stack
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next-dot-js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)
+![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white)
+![Material-UI](https://img.shields.io/badge/Material--UI-0081CB?style=for-the-badge&logo=mui&logoColor=white)
+![Formik](https://img.shields.io/badge/Formik-FF5733?style=for-the-badge&logo=formik&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-55c57a?style=for-the-badge&logoColor=white)
 
-### Part 1: Backend Setup
+# Setup
+1. Navigate to frontend directory from backend `cd ..`
+2. Install dependencies: `npm install`
+3. Copy `.env.prototype` to `.env`: `cp .env.prototype .env`
+4. Fill in your Firebase project details in the `.env` file
+5. Build and start the nextjs frontend: `npm run dev`
+  
 
-#### Create a Backend Repository
-- **Repository Name:** backend-repo
-- **Framework:** Express.js
-- **Setup:** Initialize Firebase SDK in your project.
+# Features
 
-#### Directory Structure
-Create the following folders:
-- `routes`
-- `controller`
-- `middleware`
-- `config`
+## Authentication
+- Firebase authentication using email and password, token verification on the server
+- Using auth provider to keep the user details and token
+- Routing based on sign in, sign out and unauthorized 
 
-#### Endpoint and Middleware Creation
-- **Endpoint Name:** update-user-data
-  - **Functionality:** Updates Firestore data in the USERS collection.
-- **Endpoint Name:** fetch-user-data
-  - **Functionality:** Fetch Firestore data in the USERS collection.
-- **Middleware:** Create a simple `authMiddleware` to validate the request token.
+## Validation
+- Type safe form validations using Zod schema
+- Api response and request object parsing
+- Consistent schemas for frontend and backend
 
-#### Error Handling
-Create an `ApiError` class to standardize error responses.
+## API / Error Handling
+- Axios with type safe wrapper to make api calls
+- Custom error handling using interceptors
 
-#### Example Directory Structure and Code
-```
-backend-repo/
-├── config/
-│ └── firebaseConfig.ts
-├── controller/
-│ └── api.ts
-├── core/
-│ └── app.ts
-├── entities/
-│ └── ApiError.ts
-├── middleware/
-│ └── authMiddleware.ts
-├── repository/
-│ └── userCollection.ts
-├── routes/
-│ └── userRoutes.ts
-└── package.json
-```
+## User Interface
+- Material UI interface with custom theme
+- Loading signs, response web design and proper color scheme
 
-
----
-
-### Part 2: Frontend Setup
-
-#### Create a Frontend Repository
-- **Repository Name:** frontend-repo
-- **Framework:** Next.js
-- **UI Library:** React MUI
-
-#### Directory Structure
-Create the following folders:
-- `apis`
-- `components`
-- `store`
-- `theme`
-- `app`
-
-#### Setup Redux
-- Configure Redux for state management.
-- Setup and configure React-MUI Theme.
-- Setup Firebase auth login and create a basic Logic Form.
-
-#### Logic Form
-- The Logic Form needs to be mobile responsive with the help of React MUI configuration.
-- Use App Router (Next.js 13+) to navigate between login and main page.
-
-#### Button and Update Data API Integration
-- **Button:** Create a button to trigger the backend endpoint.
-  - I should get an unauthorized error when I click the button without logging in.
-- **API Abstraction:** Ensure proper abstraction for API calls.
-- **State Management:** Use Redux to manage and display the state of the update process, including loading, success, and error messages using Typography.
-
-#### Display Label with Fetch Data API Integration using SSR
-- Make the FE repo able to test API calling locally using Firebase Emulator if I run `npm run build && firebase emulators:start --only functions` on the BE repo.
-
-#### Submission
-Please submit your BE and FE GitHub public repo link to hello@ebuddy.gg when you are done.
-
-#### Example Directory Structure and Code
-```
-frontend-repo/
-├── apis/
-│ └── userApi.ts
-├── theme/...
-├── app/...
-├── components/
-│ └── UpdateButton.tsx
-├── store/
-│ ├── actions.ts
-│ ├── reducers.ts
-│ └── store.ts
-└── package.json
-```
+## State Management
+- Global statement using redux-toolkit, setup of slices and store
+- Using selectors to subscribe to store changes, such as notifications and users
