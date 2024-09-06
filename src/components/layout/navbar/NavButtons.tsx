@@ -1,10 +1,10 @@
 "use client";
 
-import { openSignInDialog } from "@/components/auth/SignInDialog";
-import { ThemeIcon, SignInIcon } from "@/components/common/icons";
-import { useAuth } from "@/hooks/useAuth";
+import { SignInIcon, ThemeIcon } from "@/components/common/icons";
+import { Routes } from "@/constants/navigation";
 import { ThemesWithLabel } from "@/constants/themes";
-import { useState, useRef, useEffect } from "react";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useRef, useState } from "react";
 import { ProfileMenu } from "./ProfileMenu";
 
 export const NavButtons = () => {
@@ -38,6 +38,7 @@ export const NavButtons = () => {
             <li className="justify-around" ref={themeMenuRef}>
                 <details
                     open={isThemeMenuOpen}
+                    title="Theme"
                     onToggle={(e) => setIsThemeMenuOpen(e.currentTarget.open)}
                 >
                     <summary>
@@ -68,10 +69,12 @@ export const NavButtons = () => {
                 <ProfileMenu />
             ) : (
                 <li>
-                    <button className="btn btn-ghost" onClick={openSignInDialog}>
+                    <a href={Routes.SignIn} className="btn btn-ghost" title="Sign In">
+                        {/* <button title="Sign In" className="btn btn-ghost"> */}
                         <SignInIcon />
                         <span className="hidden lg:inline">Sign in</span>
-                    </button>
+                        {/* </button> */}
+                    </a>
                 </li>
             )}
         </ul>

@@ -1,5 +1,5 @@
 "use client";
-import { signOutFb } from "@/actions/auth.actions";
+import { signOutSupabase } from "@/actions/auth/auth.supabase";
 import { LogoutIcon, ProfileIcon } from "@/components/common/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useRef, useState } from "react";
@@ -27,7 +27,8 @@ export const ProfileMenu = () => {
     }, []);
 
     const clickLogout = async () => {
-        const response = await signOutFb();
+        //const response = await signOutFb();
+        const response = await signOutSupabase();
         if (response.isSuccess) {
             toast.success("User logged out.");
         } else {
@@ -47,12 +48,12 @@ export const ProfileMenu = () => {
                             <img
                                 width={20}
                                 height={20}
-                                src={user?.photoURL ?? "/icons/user3.png"}
+                                src={user?.user_metadata.photoUrl ?? "/icons/user3.png"}
                             />
                         </div>
                     </div>
                     <span className="hidden lg:inline ml-1">
-                        {user?.displayName ?? ""}
+                        {user?.user_metadata.displayName ?? ""}
                     </span>
                 </summary>
                 <ul className="bg-base-100  p-2">

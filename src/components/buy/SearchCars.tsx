@@ -2,7 +2,7 @@
 
 import { Brand } from "@/types/brands.schema";
 import React, { useEffect, useState } from "react";
-import { SearchIcon } from "../common/icons";
+import { SearchIcon } from "@components/common/icons";
 
 type SearchCarsProps = {
     initialBrands: Brand[];
@@ -49,7 +49,7 @@ const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
             const results = matchOptions(query, initalOptions);
             setFilteredOptions(results);
         }
-    }, [query, initialBrands]);
+    }, [query, initalOptions]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { isRequired, minChars } from "../utils";
+import { isRequired, minChars } from "../utils/utils";
 
 /* Schemas must match with backend API */
 const SignUpSchema = z.object({

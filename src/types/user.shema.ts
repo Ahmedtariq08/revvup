@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { isRequired, minChars } from "../utils";
+import { isRequired, minChars } from "../utils/utils";
 
 const UserSchema = z.object({
     uid: z.string({ message: isRequired("Uid") }),
