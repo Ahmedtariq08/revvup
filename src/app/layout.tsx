@@ -22,7 +22,7 @@ export default function RootLayout({
             <ReduxProvider>
                 <body className={`${inter.className} app-container`}>
                     {children}
-                    <Toaster richColors />
+                    <Toaster richColors closeButton />
                 </body>
             </ReduxProvider>
         </html>

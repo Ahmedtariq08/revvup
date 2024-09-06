@@ -1,13 +1,11 @@
 "use client";
 
-import { openSignInDialog } from "@/components/auth/SignInDialog";
-import { ThemeIcon, SignInIcon } from "@/components/common/icons";
-import { useAuth } from "@/hooks/useAuth";
-import { ThemesWithLabel } from "@/constants/themes";
-import { useState, useRef, useEffect } from "react";
-import { ProfileMenu } from "./ProfileMenu";
-import Link from "next/link";
+import { SignInIcon, ThemeIcon } from "@/components/common/icons";
 import { Routes } from "@/constants/navigation";
+import { ThemesWithLabel } from "@/constants/themes";
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useRef, useState } from "react";
+import { ProfileMenu } from "./ProfileMenu";
 
 export const NavButtons = () => {
     const { user, loading } = useAuth();

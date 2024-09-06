@@ -1,19 +1,19 @@
 // Define interfaces for your Firestore documents
 
-interface User {
-    uid: string;
-    email: string;
-    displayName: string;
-    phone: string;
-    location: {
-        address: string;
-        city: string;
-        postalCode: number;
-    };
-    photoUrl: string;
-    role: "customer" | "dealer" | "admin";
-    favourites: string[]; // reference to car id in car collection
-}
+// interface User {
+//     uid: string;
+//     email: string;
+//     displayName: string;
+//     phone: string;
+//     location: {
+//         address: string;
+//         city: string;
+//         postalCode: number;
+//     };
+//     photoUrl: string;
+//     role: "customer" | "dealer" | "admin";
+//     favourites: string[]; // reference to car id in car collection
+// }
 
 interface Dealership {
     id: string;

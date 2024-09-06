@@ -44,7 +44,7 @@ export const AuthForm = (props: AuthFormProps) => {
             setPhoto(null);
             reset();
         };
-    }, []);
+    }, [reset]);
 
     //ANCHOR - Functions for Sign up
     const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {

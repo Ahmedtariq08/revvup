@@ -78,3 +78,16 @@ export const signUpSupabase = async (
         return handleAuthError(error);
     }
 };
+
+export const signOutSupabase = async () => {
+    try {
+        const supabase = createClient();
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            return handleAuthError(error);
+        }
+        return handleAuthResponse({});
+    } catch (error) {
+        return handleAuthError(error);
+    }
+};
