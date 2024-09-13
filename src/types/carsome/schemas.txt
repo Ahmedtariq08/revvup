@@ -1,0 +1,98 @@
+DB schema
+
+1) brands:
+id - primary key (number)
+name: string,
+logo: string url
+models: One to many relationship with models table
+
+2) models:
+id - primary key (number)
+name: string
+variants: One to many relationship with variants table
+
+3) variants:
+id: primary key (number)
+name: string
+engine: references engine table
+transmission: references transmission table
+
+4) engines:
+id: primary key (number)
+engine: string
+
+4) transmissions
+id - primary key (number)
+transmission - string
+
+5) bodytypes
+id - primary key (number)
+body: string
+
+6) colors:
+id - primary key (number)
+color - string
+
+6) places
+id: primary key (number)
+place: string
+stores: One to many relationship with stores
+
+7) stores
+id - primary key (number)
+store - string
+
+
+9) fuel_types
+id: number (primary key)
+fuel_type: string
+
+10) images_inner
+id: number (primary key)
+car_id: number (foreign_key)
+name: string
+url: string
+order: number 
+
+11) images_outer
+id: number (primary key)
+car_id: number (foreign_key)
+name: string
+url: string
+order: number
+
+12) prices
+id : primary key (number)
+car_id: references a car in car table
+price: number
+month_price: number
+campaign_discount: number 
+
+13) cars
+id: primary key (number)
+brand: references brands table key
+model: references models table key
+variant: references variant table key
+price: references prices table key
+color: references prices color key
+type: references prices bodytypes key
+store: references prices store key
+place: references place table key
+fuel: references prices fuel key
+images_inner: references prices images_inner key
+images_outer: references prices images_outer key
+is_available: boolean
+license_plate: string
+
+
+
+
+
+
+
+
+
+
+
+
+
