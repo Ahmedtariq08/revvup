@@ -1,264 +1,92 @@
-import { Brand } from "@/types/brands.schema";
+"use server";
+import { createClient } from "@/utils/supabase/server";
+import { Brand } from "./types";
 
-const brandsData: Brand[] = [
-    {
-        model: "Audi",
-        logo: "https://b2c-cdn.carsome.my/B2C/fd3d4c8f-0b4b-429b-b651-99dbf28e5b16.png",
-        cars: ["A4", "Q3", "TT"],
-    },
-    {
-        model: "BMW",
-        logo: "https://b2c-cdn.carsome.my/B2C/017ee584-024f-4512-a183-a21e127264ea.png",
-        cars: [
-            "116i",
-            "218i",
-            "318i",
-            "320i",
-            "330e",
-            "330i",
-            "530i",
-            "740Le",
-            "X1",
-            "X3",
-        ],
-    },
-    {
-        model: "Citroen",
-        logo: "",
-        cars: ["DS4"],
-    },
-    {
-        model: "Daihatsu",
-        logo: "https://b2c-cdn.carsome.my/B2C/1c2c8e7b-69e6-4198-8f82-fc6a1029211e.png",
-        cars: ["Gran Max"],
-    },
-    {
-        model: "Ford",
-        logo: "https://b2c-cdn.carsome.my/B2C/c263653c-03b5-47e7-b33c-e0de010d6a71.png",
-        cars: ["EcoSport", "Fiesta"],
-    },
-    {
-        model: "Haval",
-        logo: "",
-        cars: ["H1"],
-    },
-    {
-        model: "Honda",
-        logo: "https://b2c-cdn.carsome.my/B2C/901f99cd-ce87-46f8-914b-1a90b6fb45de.png",
-        cars: [
-            "Accord",
-            "BR-V",
-            "CR-V",
-            "CR-Z",
-            "City",
-            "Civic",
-            "Freed",
-            "HR-V",
-            "Jazz",
-            "WR-V",
-        ],
-    },
-    {
-        model: "Hyundai",
-        logo: "https://b2c-cdn.carsome.my/B2C/f093c68e-5b4f-4047-af47-ae3c62637609.png",
-        cars: ["Elantra", "Grand Starex", "Sonata", "Tucson"],
-    },
-    {
-        model: "Inokom",
-        logo: "https://b2c-cdn.carsome.my/B2C/5efea6e4-382e-4bb5-9f9a-af8794163fa2.png",
-        cars: ["Elantra", "Santa Fe"],
-    },
-    {
-        model: "Isuzu",
-        logo: "https://b2c-cdn.carsome.my/B2C/51566808-ae0c-4e2a-b30d-31bdee19f599.png",
-        cars: ["D-Max"],
-    },
-    {
-        model: "Kia",
-        logo: "https://b2c-cdn.carsome.my/B2C/330365c1-6beb-4804-b081-a05553322c32.png",
-        cars: [
-            "Carnival",
-            "Cerato",
-            "Optima K5",
-            "Picanto",
-            "Rio",
-            "Sorento",
-            "Sportage",
-        ],
-    },
-    {
-        model: "Land Rover",
-        logo: "https://b2c-cdn.carsome.my/B2C/2cf11188-7389-49d7-a947-79ce67e3fca5.png",
-        cars: ["Range Rover Evoque"],
-    },
-    {
-        model: "Lexus",
-        logo: "https://b2c-cdn.carsome.my/B2C/6b73d307-1624-46dd-ac4f-8e0ca428dfc8.png",
-        cars: ["NX200t"],
-    },
-    {
-        model: "MINI",
-        logo: "https://b2c-cdn.carsome.my/B2C/7794508c-7495-46da-b8bd-bfbdc14a79ff.png",
-        cars: ["Cooper", "Countryman"],
-    },
-    {
-        model: "Mazda",
-        logo: "https://b2c-cdn.carsome.my/B2C/16e48c6b-3785-4480-8016-1e979331c593.png",
-        cars: ["2", "3", "6", "BT-50", "Biante", "CX-3", "CX-5"],
-    },
-    {
-        model: "Mercedes-Benz",
-        logo: "https://b2c-cdn.carsome.my/B2C/5c607ff9-8555-4fd9-9afb-0693076ee09d.png",
-        cars: [
-            "A200",
-            "A250",
-            "C200",
-            "C200 CGI",
-            "C250",
-            "CLA200",
-            "E200",
-            "E200 CGI",
-            "E250",
-            "E250 CGI",
-            "GLA200",
-            "GLA250",
-            "GLC200",
-        ],
-    },
-    {
-        model: "Mitsubishi",
-        logo: "https://b2c-cdn.carsome.my/B2C/f56b6756-ec79-4298-8487-75275a14ce6f.png",
-        cars: ["ASX", "Attrage", "Lancer", "Outlander", "Triton", "Xpander"],
-    },
-    {
-        model: "Naza",
-        logo: "https://b2c-cdn.carsome.my/B2C/c578067f-371b-43b7-b1db-b2078a9e7506.png",
-        cars: ["Forte"],
-    },
-    {
-        model: "Neta",
-        logo: "",
-        cars: ["V"],
-    },
-    {
-        model: "Nissan",
-        logo: "https://b2c-cdn.carsome.my/B2C/591a5015-9edc-4ce7-93a2-040905f1c629.png",
-        cars: [
-            "Almera",
-            "Grand Livina",
-            "Livina X-Gear",
-            "NV200",
-            "NV350 Urvan",
-            "Navara",
-            "Serena",
-            "Sylphy",
-            "Teana",
-            "Urvan",
-            "X-Trail",
-        ],
-    },
-    {
-        model: "Perodua",
-        logo: "https://b2c-cdn.carsome.my/B2C/1fddb7f2-086e-4ea2-9f67-278ef57a4f1f.png",
-        cars: [
-            "AXIA",
-            "Alza",
-            "Aruz",
-            "Ativa",
-            "Bezza",
-            "Kelisa",
-            "Kenari",
-            "Myvi",
-            "Viva",
-        ],
-    },
-    {
-        model: "Peugeot",
-        logo: "https://b2c-cdn.carsome.my/B2C/e177d30d-b6c5-4dc9-84e8-fd08a4207c2a.png",
-        cars: ["2008", "208", "3008", "408"],
-    },
-    {
-        model: "Proton",
-        logo: "https://b2c-cdn.carsome.my/B2C/6966cca4-533c-4cf8-b3fb-3dd060742a5f.png",
-        cars: [
-            "Ertiga",
-            "Exora",
-            "Inspira",
-            "Iriz",
-            "Perdana",
-            "Persona",
-            "Preve",
-            "S70",
-            "Saga",
-            "Suprima S",
-            "X50",
-            "X70",
-            "X90",
-        ],
-    },
-    {
-        model: "Renault",
-        logo: "https://b2c-cdn.carsome.my/B2C/5a84a05b-70ed-48ec-92bf-cf0b55076350.png",
-        cars: ["Captur"],
-    },
-    {
-        model: "Subaru",
-        logo: "https://b2c-cdn.carsome.my/B2C/371b9234-e617-475d-a97b-39831e3a929d.png",
-        cars: ["Forester", "XV"],
-    },
-    {
-        model: "Suzuki",
-        logo: "https://b2c-cdn.carsome.my/B2C/b4441570-3f11-45a8-871d-afea80564b96.png",
-        cars: ["Grand Vitara", "Jimny", "SX4", "Swift"],
-    },
-    {
-        model: "Toyota",
-        logo: "https://b2c-cdn.carsome.my/B2C/d6fd36a1-7f18-464b-83fe-21843dd5cd4e.png",
-        cars: [
-            "Alphard",
-            "Avanza",
-            "C-HR",
-            "Camry",
-            "Corolla Altis",
-            "Corolla Cross",
-            "Estima",
-            "Fortuner",
-            "Harrier",
-            "Hiace",
-            "Hilux",
-            "Innova",
-            "Innova Zenix",
-            "Prius C",
-            "Sienta",
-            "Vellfire",
-            "Vios",
-            "Voxy",
-            "Wish",
-            "Yaris",
-        ],
-    },
-    {
-        model: "Volkswagen",
-        logo: "https://b2c-cdn.carsome.my/B2C/134513de-3cf8-4336-9ca1-c12faab10877.png",
-        cars: [
-            "Arteon",
-            "Golf",
-            "Jetta",
-            "Passat",
-            "Polo",
-            "Scirocco",
-            "The Beetle",
-            "Tiguan",
-            "Vento",
-        ],
-    },
-].map((brand, index) => {
-    return {
-        id: `${index + 1}`,
-        brandName: brand.model,
-        models: brand.cars,
-        logo: brand.logo,
-    };
-});
+const supabase = createClient();
 
-export default brandsData;
+const getBrandsAndModels = async (): Promise<Brand[]> => {
+    try {
+        const myHeaders = new Headers();
+        myHeaders.append("Cookie", process.env.BRAND_COOKIE ?? "");
+
+        const response = await fetch(process.env.BRAND_URL ?? "", {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow",
+        });
+        const data = await response.json();
+        return Array.isArray(data.data) ? data.data : [];
+    } catch (error) {
+        console.error("Unable to fetch brands and models");
+        return [];
+    }
+};
+
+export const seedBrandsAndModels = async () => {
+    const brands = await getBrandsAndModels();
+    if (brands.length === 0) {
+        console.log("No brands or models to seed");
+        return;
+    }
+
+    for (const brandData of brands) {
+        // Check if the brand already exists
+        const { data: existingBrands, error: brandError } = await supabase
+            .from("brands")
+            .select("id")
+            .eq("name", brandData.name);
+
+        if (brandError) {
+            console.error("Error checking existing brands:", brandError);
+            continue;
+        }
+
+        let brandId: number;
+
+        if (existingBrands.length > 0) {
+            // Brand exists, use the existing ID
+            brandId = existingBrands[0].id;
+        } else {
+            // Insert new brand
+            const { data: insertedBrand, error: insertBrandError } =
+                await supabase
+                    .from("brands")
+                    .insert([{ name: brandData.name, logo: brandData.logo }])
+                    .select("id")
+                    .single();
+
+            if (insertBrandError) {
+                console.error("Error inserting brand:", insertBrandError);
+                continue;
+            }
+
+            brandId = insertedBrand.id;
+        }
+
+        // Seed models for the brand
+        for (const modelData of brandData.model) {
+            // Check if the model already exists
+            const { data: existingModels, error: modelError } = await supabase
+                .from("models")
+                .select("id")
+                .eq("name", modelData.name)
+                .eq("brand_id", brandId);
+
+            if (modelError) {
+                console.error("Error checking existing models:", modelError);
+                continue;
+            }
+
+            if (existingModels.length === 0) {
+                // Insert new model
+                const { error: insertModelError } = await supabase
+                    .from("models")
+                    .insert([{ name: modelData.name, brand_id: brandId }]);
+
+                if (insertModelError) {
+                    console.error("Error inserting model:", insertModelError);
+                }
+            }
+        }
+    }
+};

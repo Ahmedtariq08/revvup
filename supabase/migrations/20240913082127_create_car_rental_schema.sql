@@ -29,7 +29,7 @@ CREATE TABLE variants (
     transmission transmission_type NOT NULL  -- ENUM for transmission
 );
 
--- bodytypes table
+-- body_types table
 CREATE TABLE body_types (
     id SERIAL PRIMARY KEY,
     body VARCHAR(255) NOT NULL
@@ -67,7 +67,7 @@ CREATE TABLE cars (
     model_id INT REFERENCES models(id) ON DELETE SET NULL,
     variant_id INT REFERENCES variants(id) ON DELETE SET NULL,
     color_id INT REFERENCES colors(id) ON DELETE SET NULL,
-    bodytype_id INT REFERENCES bodytypes(id) ON DELETE SET NULL,
+    bodytype_id INT REFERENCES body_types(id) ON DELETE SET NULL,
     store_id INT REFERENCES stores(id) ON DELETE SET NULL,
     place_id INT REFERENCES places(id) ON DELETE SET NULL,
     fuel_type_id INT REFERENCES fuel_types(id) ON DELETE SET NULL,

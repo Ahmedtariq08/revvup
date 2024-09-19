@@ -1,9 +1,5 @@
 const AboutPage = async () => {
-    return (
-        <div>
-            <ul></ul>
-        </div>
-    );
+    return <div>About!</div>;
 };
 
 export default AboutPage;
