@@ -1,26 +1,24 @@
 "use client";
-
-import { Brand } from "@/types/brands.schema";
-import React, { useEffect, useState } from "react";
-import { SearchIcon } from "@components/common/icons";
+import { BrandsWithModels } from "@/actions/cars/brands";
+import { CrossIcon, SearchIcon } from "@components/common/icons";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type SearchCarsProps = {
-    initialBrands: Brand[];
+    initialBrands: BrandsWithModels;
 };
 
-type BrandOptions = Brand & { label: string };
+type BrandOptions = ReturnType<typeof mapBrandsToOptions>;
 
-const mapBrandsToOptions = (brands: Brand[]): BrandOptions[] => {
-    const options: BrandOptions[] = [];
+const mapBrandsToOptions = (brands: BrandsWithModels) => {
+    const options = [];
     if (Array.isArray(brands)) {
         for (let i = 0; i < brands.length; i++) {
-            const brand = brands[i].brandName;
-            const models = brands[i].models;
+            const { id, name, models, logo } = brands[i];
             if (Array.isArray(models)) {
                 for (let j = 0; j < models.length; j++) {
                     const model = models[j];
-                    const label = `${brand} ${model}`;
-                    options.push({ label, ...brands[i] });
+                    const label = `${name} ${model.name}`;
+                    options.push({ id, label, name, logo });
                 }
             }
         }
@@ -28,20 +26,27 @@ const mapBrandsToOptions = (brands: Brand[]): BrandOptions[] => {
     return options;
 };
 
-const matchOptions = (query: string, options: BrandOptions[]): BrandOptions[] => {
+const matchOptions = (query: string, options: BrandOptions): BrandOptions => {
     return options.filter((option) => {
         return option.label.toLowerCase().includes(query.toLowerCase());
     });
 };
 
 // TODO - Add cross icon in search to remove the query
-// TODO - Selected value gets selected in seach bar and fetches results
 
 const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
-    const initalOptions = mapBrandsToOptions(initialBrands);
-    const [query, setQuery] = useState<string>("");
-    const [filteredOptions, setFilteredOptions] = useState<BrandOptions[]>(initalOptions);
+    // Memoize the options to ensure they are computed only once
+    const initalOptions = useMemo(
+        () => mapBrandsToOptions(initialBrands),
+        [initialBrands],
+    );
 
+    const [query, setQuery] = useState<string>("");
+    const [filteredOptions, setFilteredOptions] = useState(initalOptions);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const dropdownRef = useRef<HTMLUListElement>(null);
+
+    // Filter the options based on query
     useEffect(() => {
         if (query.trim() === "") {
             setFilteredOptions(initalOptions);
@@ -51,39 +56,43 @@ const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
         }
     }, [query, initalOptions]);
 
+    // Handle input change
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
     };
 
-    const boldString = (text: string) => {
-        const strRegExp = new RegExp(query, "gi");
-        return text.replace(strRegExp, `<b>${query}</b>`);
+    // Handle option selection
+    const handleOptionClick = (option: any) => {
+        setQuery(option.label); // Update the input field with the selected option
+        setFilteredOptions([]); // Hide options after selection
     };
 
-    //REVIEW -
-    const highlightQuery = (text: string) => {
-        if (!query) return text;
-        const parts = text.split(new RegExp(`(${query})`, "gi"));
-        return (
-            <>
-                {parts.map((part, index) =>
-                    part.toLowerCase() === query.toLowerCase() ? (
-                        <span key={index} className="font-bold">
-                            {part}
-                        </span>
-                    ) : (
-                        part
-                    ),
-                )}
-            </>
-        );
-    };
+    // Close the dropdown if clicked outside
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                inputRef.current &&
+                !inputRef.current.contains(event.target as Node) &&
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setQuery("");
+                setFilteredOptions([]); // Close dropdown if clicked outside
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [inputRef, dropdownRef]);
 
     return (
-        <>
+        <div className="relative">
             <label className="input input-bordered flex items-center gap-2">
                 <SearchIcon />
                 <input
+                    ref={inputRef}
                     type="text"
                     spellCheck={false}
                     className="grow"
@@ -91,17 +100,24 @@ const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
                     value={query}
                     onChange={handleInputChange}
                 />
+                <CrossIcon width={50} height={50} />
             </label>
+
+            {/* Show dropdown only if there are filtered options and the query is not empty */}
             {filteredOptions.length > 0 && query.length > 0 && (
-                <ul className="dropdown-content mt-2 p-2 shadow bg-base-100 z-10 w-9/10 rounded-box absolute max-h-40 overflow-y-auto">
+                <ul
+                    ref={dropdownRef}
+                    className="dropdown-content mt-2 p-2 shadow bg-base-100 z-10 w-full rounded-box absolute max-h-40 overflow-y-auto"
+                >
                     {filteredOptions.map((option, index) => (
                         <li
                             key={index}
-                            className="p-2 hover:bg-base-200 flex items-center"
+                            className="p-2 hover:bg-base-200 flex items-center cursor-pointer"
+                            onClick={() => handleOptionClick(option)}
                         >
                             <img
                                 src={option.logo}
-                                alt={option.brandName}
+                                alt={option.name}
                                 className="w-6 h-6 mr-2"
                             />
                             {option.label}
@@ -109,7 +125,14 @@ const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
                     ))}
                 </ul>
             )}
-        </>
+
+            {/* Show 'No results found' if query has results but no match */}
+            {query.length > 0 && filteredOptions.length === 0 && (
+                <ul className="dropdown-content mt-2 p-2 shadow bg-base-100 z-10 w-full rounded-box absolute max-h-40 overflow-y-auto">
+                    <li className="p-2 text-gray-500">No results found</li>
+                </ul>
+            )}
+        </div>
     );
 };
 

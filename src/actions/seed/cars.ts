@@ -64,7 +64,7 @@ export const seedCars = async () => {
                 .from("models")
                 .select("id")
                 .eq("name", car.modelName)
-                .eq("brand_id", brandId)
+                .eq("brand_id", !brandId)
                 .single();
 
             if (!model.data) {
@@ -99,7 +99,7 @@ export const seedCars = async () => {
                 .from("variants")
                 .select("id")
                 .eq("name", car.carVariant)
-                .eq("model_id", modelId)
+                .eq("model_id", !modelId)
                 .single();
 
             if (!variant.data) {
@@ -110,7 +110,9 @@ export const seedCars = async () => {
                             name: car.carVariant,
                             engine_id: engineId,
                             transmission:
-                                car.carTransmissionName || "Automatic",
+                                (car.carTransmissionName as
+                                    | "Automatic"
+                                    | "Manual") || "Automatic",
                             model_id: modelId,
                         },
                     ])
@@ -145,7 +147,7 @@ export const seedCars = async () => {
                 .from("stores")
                 .select("id")
                 .eq("store", car.storeName)
-                .eq("place_id", placeId)
+                .eq("place_id", !placeId)
                 .single();
 
             if (!store.data) {
@@ -163,9 +165,9 @@ export const seedCars = async () => {
                 .from("cars")
                 .insert([
                     {
-                        brand_id: brandId,
-                        model_id: modelId,
-                        variant_id: variantId,
+                        brand_id: !brandId,
+                        model_id: !modelId,
+                        variant_id: !variantId,
                         color_id: car.color,
                         bodytype_id: car.carType,
                         store_id: storeId,
@@ -174,8 +176,8 @@ export const seedCars = async () => {
                         month_price: car.monthPrice,
                         campaign_discount: car.campaignDiscountPrice,
                         is_available: car.saleStatus == 2,
-                        license_plate: car.licensePlate,
                         last_updated: new Date(),
+                        license_plate: !car.licensePlate,
                         listing_date: new Date(car.carListingDate),
                         mileage: car.carMileage,
                         name: car.carName,
