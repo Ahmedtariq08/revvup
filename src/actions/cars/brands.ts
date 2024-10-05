@@ -1,10 +1,12 @@
-import { AsyncReturnType } from "@/types/global.types";
+import { ArrayElement, AsyncReturnType } from "@/types/global.types";
 import { createClient } from "@/utils/supabase/server";
+import { error } from "console";
+
+const supabase = createClient();
 
 export const getBrandsWithModels = async () => {
     try {
         // Fetch brands with related models using a join query
-        const supabase = createClient();
         const { data, error } = await supabase
             .from("brands")
             .select("id, name, logo, models (id, name)")
@@ -24,4 +26,26 @@ export const getBrandsWithModels = async () => {
     }
 };
 
-export type BrandsWithModels = AsyncReturnType<typeof getBrandsWithModels>;
+export const getAllCars = async () => {
+    try {
+        const { data, error } = await supabase
+            .from("cars")
+            .select(
+                `*, 
+                places(place, id), 
+                body_types(body, id)`,
+            )
+            .eq("is_available", true);
+        if (error) {
+            console.error("Error fetching cars", error.message);
+            return [];
+        }
+        return data;
+    } catch {
+        console.error("Error in getting all cars:", error);
+        return [];
+    }
+};
+
+export type Car = ArrayElement<AsyncReturnType<typeof getAllCars>>;
+export type Brand = ArrayElement<AsyncReturnType<typeof getBrandsWithModels>>;

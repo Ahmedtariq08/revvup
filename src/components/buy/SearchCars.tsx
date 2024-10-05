@@ -1,15 +1,15 @@
 "use client";
-import { BrandsWithModels } from "@/actions/cars/brands";
-import { CrossIcon, SearchIcon } from "@components/common/icons";
+import { Brand } from "@/actions/cars/brands";
+import { InputCrossIcon, SearchIcon } from "@components/common/icons";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type SearchCarsProps = {
-    initialBrands: BrandsWithModels;
+    initialBrands: Brand[];
 };
 
 type BrandOptions = ReturnType<typeof mapBrandsToOptions>;
 
-const mapBrandsToOptions = (brands: BrandsWithModels) => {
+const mapBrandsToOptions = (brands: Brand[]) => {
     const options = [];
     if (Array.isArray(brands)) {
         for (let i = 0; i < brands.length; i++) {
@@ -31,8 +31,6 @@ const matchOptions = (query: string, options: BrandOptions): BrandOptions => {
         return option.label.toLowerCase().includes(query.toLowerCase());
     });
 };
-
-// TODO - Add cross icon in search to remove the query
 
 const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
     // Memoize the options to ensure they are computed only once
@@ -56,17 +54,6 @@ const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
         }
     }, [query, initalOptions]);
 
-    // Handle input change
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setQuery(e.target.value);
-    };
-
-    // Handle option selection
-    const handleOptionClick = (option: any) => {
-        setQuery(option.label); // Update the input field with the selected option
-        setFilteredOptions([]); // Hide options after selection
-    };
-
     // Close the dropdown if clicked outside
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -87,6 +74,21 @@ const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
         };
     }, [inputRef, dropdownRef]);
 
+    // Handle input change
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setQuery(e.target.value);
+    };
+
+    // Handle option selection
+    const handleOptionClick = (option: any) => {
+        setQuery(option.label); // Update the input field with the selected option
+        setFilteredOptions([]); // Hide options after selection
+    };
+
+    const handleClearInput = () => {
+        setQuery("");
+    };
+
     return (
         <div className="relative">
             <label className="input input-bordered flex items-center gap-2">
@@ -100,7 +102,9 @@ const SearchCars: React.FC<SearchCarsProps> = ({ initialBrands }) => {
                     value={query}
                     onChange={handleInputChange}
                 />
-                <CrossIcon width={50} height={50} />
+                <button className="btn-ghost p-0" onClick={handleClearInput}>
+                    <InputCrossIcon width={15} height={15} />
+                </button>
             </label>
 
             {/* Show dropdown only if there are filtered options and the query is not empty */}

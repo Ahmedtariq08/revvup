@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { DEFAULT_THEME } from "@/constants/themes";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" data-theme="cupcake">
+        <html lang="en" data-theme={DEFAULT_THEME}>
             <ReduxProvider>
                 <body className={`${inter.className} app-container`}>
                     {children}

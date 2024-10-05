@@ -209,6 +209,32 @@ export const CrossIcon = (props: IconProps) => {
     );
 };
 
+export const InputCrossIcon = (props: IconProps) => {
+    const { width = defaults.width, height = defaults.height } = props;
+    return (
+        <svg
+            className={`fill-current ${props.classes}`}
+            width={width}
+            height={height}
+            viewBox="0 0 25 25"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <g id="Page-1" stroke="none" strokeWidth="1">
+                <g
+                    id="Icon-Set"
+                    transform="translate(-467.000000, -1039.000000)"
+                >
+                    <path
+                        d="M489.396,1061.4 C488.614,1062.18 487.347,1062.18 486.564,1061.4 L479.484,1054.32 L472.404,1061.4 C471.622,1062.18 470.354,1062.18 469.572,1061.4 C468.79,1060.61 468.79,1059.35 469.572,1058.56 L476.652,1051.48 L469.572,1044.4 C468.79,1043.62 468.79,1042.35 469.572,1041.57 C470.354,1040.79 471.622,1040.79 472.404,1041.57 L479.484,1048.65 L486.564,1041.57 C487.347,1040.79 488.614,1040.79 489.396,1041.57 C490.179,1042.35 490.179,1043.62 489.396,1044.4 L482.316,1051.48 L489.396,1058.56 C490.179,1059.35 490.179,1060.61 489.396,1061.4 L489.396,1061.4 Z M485.148,1051.48 L490.813,1045.82 C492.376,1044.26 492.376,1041.72 490.813,1040.16 C489.248,1038.59 486.712,1038.59 485.148,1040.16 L479.484,1045.82 L473.82,1040.16 C472.257,1038.59 469.721,1038.59 468.156,1040.16 C466.593,1041.72 466.593,1044.26 468.156,1045.82 L473.82,1051.48 L468.156,1057.15 C466.593,1058.71 466.593,1061.25 468.156,1062.81 C469.721,1064.38 472.257,1064.38 473.82,1062.81 L479.484,1057.15 L485.148,1062.81 C486.712,1064.38 489.248,1064.38 490.813,1062.81 C492.376,1061.25 492.376,1058.71 490.813,1057.15 L485.148,1051.48 L485.148,1051.48 Z"
+                        id="cross"
+                    ></path>
+                </g>
+            </g>
+        </svg>
+    );
+};
+
 export const EmailIcon = (props: IconProps) => {
     const { width = defaults.width, height = defaults.height } = props;
     return (
@@ -255,7 +281,10 @@ export const GoogleIcon = (props: IconProps) => {
             <defs></defs>
             <g id="Icons" stroke="none" fill="none">
                 <g id="Color-" transform="translate(-401.000000, -860.000000)">
-                    <g id="Google" transform="translate(401.000000, 860.000000)">
+                    <g
+                        id="Google"
+                        transform="translate(401.000000, 860.000000)"
+                    >
                         <path
                             d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24"
                             id="Fill-1"
@@ -363,7 +392,13 @@ export const ProfileIcon = (props: IconProps) => {
             xmlns="http://www.w3.org/2000/svg"
         >
             <defs></defs>
-            <g id="Page-1" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+            <g
+                id="Page-1"
+                stroke="none"
+                strokeWidth="1"
+                fill="none"
+                fillRule="evenodd"
+            >
                 <g
                     id="Dribbble-Light-Preview"
                     transform="translate(-380.000000, -2159.000000)"
@@ -409,6 +444,21 @@ export const SearchIcon = () => {
                 d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
                 clipRule="evenodd"
             />
+        </svg>
+    );
+};
+
+export const LocationIcon = (props: IconProps) => {
+    const { width = defaults.width, height = defaults.height } = props;
+    return (
+        <svg
+            width={width}
+            height={height}
+            className={`fill-current ${props.classes}`}
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" />
         </svg>
     );
 };

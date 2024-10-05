@@ -1,11 +1,16 @@
-import { getBrandsWithModels } from "@/actions/cars/brands";
+import { getAllCars, getBrandsWithModels } from "@/actions/cars/brands";
+import CardGrid from "@/components/buy/CarGrid";
 import SearchCars from "@/components/buy/SearchCars";
 
 const BuyPage = async () => {
-    const brands = await getBrandsWithModels();
+    const [brands, cars] = await Promise.all([
+        getBrandsWithModels(),
+        getAllCars(),
+    ]);
     return (
         <>
             <SearchCars initialBrands={brands} />
+            <CardGrid cars={cars} />
         </>
     );
 };

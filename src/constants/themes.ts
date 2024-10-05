@@ -11,6 +11,8 @@ const themes = [
     "sunset",
 ];
 
+export const DEFAULT_THEME = "cupcake";
+
 // Used in theme changing dropdown
 export const ThemesWithLabel = themes.map((theme) => ({
     value: theme,

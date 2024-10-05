@@ -165,9 +165,9 @@ export const seedCars = async () => {
                 .from("cars")
                 .insert([
                     {
-                        brand_id: !brandId,
-                        model_id: !modelId,
-                        variant_id: !variantId,
+                        brand_id: brandId,
+                        model_id: modelId,
+                        variant_id: variantId,
                         color_id: car.color,
                         bodytype_id: car.carType,
                         store_id: storeId,
@@ -176,15 +176,17 @@ export const seedCars = async () => {
                         month_price: car.monthPrice,
                         campaign_discount: car.campaignDiscountPrice,
                         is_available: car.saleStatus == 2,
-                        last_updated: new Date(),
-                        license_plate: !car.licensePlate,
-                        listing_date: new Date(car.carListingDate),
+                        last_updated: new Date().toISOString(),
+                        listing_date: new Date(
+                            car.carListingDate,
+                        ).toISOString(),
                         mileage: car.carMileage,
                         name: car.carName,
                         year: car.carYear,
                         highlights: car.highLightTags,
                         image: car.image,
                         vin_code: car.vinCode,
+                        license_plate: car.licensePlate,
                     },
                 ])
                 .select("id")

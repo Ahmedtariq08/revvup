@@ -2,15 +2,20 @@
 
 import { SignInIcon, ThemeIcon } from "@/components/common/icons";
 import { Routes } from "@/constants/navigation";
-import { ThemesWithLabel } from "@/constants/themes";
+import { DEFAULT_THEME, ThemesWithLabel } from "@/constants/themes";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect, useRef, useState } from "react";
 import { ProfileMenu } from "./ProfileMenu";
 
 export const NavButtons = () => {
     const { user, loading } = useAuth();
+    const [currentTheme, setCurrentTheme] = useState(
+        ThemesWithLabel.find((t) => t.value === DEFAULT_THEME)?.label,
+    );
 
     const themeChanged = (theme: string) => {
+        const themeName = ThemesWithLabel.find((t) => t.value === theme);
+        setCurrentTheme(themeName ? themeName.label : theme);
         document.documentElement.setAttribute("data-theme", theme);
     };
 
@@ -43,9 +48,9 @@ export const NavButtons = () => {
                 >
                     <summary>
                         <ThemeIcon />
-                        <span className="hidden lg:inline">Theme</span>
+                        <span className="hidden lg:inline">{currentTheme}</span>
                     </summary>
-                    <ul className="bg-base-100  p-2">
+                    <ul className="bg-base-100  p-2 z-10">
                         {ThemesWithLabel.map((theme) => (
                             <li key={theme.value}>
                                 <button
@@ -69,7 +74,11 @@ export const NavButtons = () => {
                 <ProfileMenu />
             ) : (
                 <li>
-                    <a href={Routes.SignIn} className="btn btn-ghost" title="Sign In">
+                    <a
+                        href={Routes.SignIn}
+                        className="btn btn-ghost"
+                        title="Sign In"
+                    >
                         {/* <button title="Sign In" className="btn btn-ghost"> */}
                         <SignInIcon />
                         <span className="hidden lg:inline">Sign in</span>
